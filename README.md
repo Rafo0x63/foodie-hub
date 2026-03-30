@@ -130,3 +130,6 @@ Takav pristup omogućuje jasnu podjelu odgovornosti, lakše održavanje sustava 
 1. Klonirati repozitorij:
    ```bash
    git clone https://github.com/Rafo0x63/foodie-hub.git
+2. Pokreni pazu podataka:
+   ```bash
+   docker-compose up -d
