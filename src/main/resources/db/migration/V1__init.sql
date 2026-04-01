@@ -1,0 +1,71 @@
+CREATE TABLE users (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL UNIQUE,
+role VARCHAR(50) NOT NULL,
+status VARCHAR(50) NOT NULL,
+join_date DATE,
+last_active DATE
+);
+
+CREATE TABLE chefs (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+user_id BIGINT NOT NULL UNIQUE,
+username VARCHAR(100),
+bio TEXT,
+location VARCHAR(255),
+is_verified BOOLEAN,
+FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE recipes (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+title VARCHAR(255) NOT NULL,
+description TEXT,
+category VARCHAR(100),
+chef_id BIGINT NOT NULL,
+FOREIGN KEY (chef_id) REFERENCES chefs(id)
+);
+
+CREATE TABLE ingredients (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+recipe_id BIGINT NOT NULL,
+name VARCHAR(255) NOT NULL,
+amount VARCHAR(100),
+category VARCHAR(100),
+FOREIGN KEY (recipe_id) REFERENCES recipes(id)
+);
+
+CREATE TABLE steps (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+recipe_id BIGINT NOT NULL,
+step_number INT NOT NULL,
+title VARCHAR(255),
+description TEXT,
+time VARCHAR(50),
+FOREIGN KEY (recipe_id) REFERENCES recipes(id)
+);
+
+CREATE TABLE tags (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE recipe_tags (
+recipe_id BIGINT NOT NULL,
+tag_id BIGINT NOT NULL,
+PRIMARY KEY (recipe_id, tag_id),
+FOREIGN KEY (recipe_id) REFERENCES recipes(id),
+FOREIGN KEY (tag_id) REFERENCES tags(id)
+);
+
+CREATE TABLE comments (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+recipe_id BIGINT NOT NULL,
+user_id BIGINT NOT NULL,
+text TEXT NOT NULL,
+rating INT,
+created_at TIMESTAMP,
+FOREIGN KEY (recipe_id) REFERENCES recipes(id),
+FOREIGN KEY (user_id) REFERENCES users(id)
+);
