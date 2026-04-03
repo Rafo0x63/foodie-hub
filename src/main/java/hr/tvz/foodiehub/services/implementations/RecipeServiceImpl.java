@@ -53,6 +53,18 @@ public class RecipeServiceImpl implements RecipeService {
         return mapToDTO(recipe);
     }
 
+    @Override
+    public RecipeDTO updateRecipe(Long id, CreateRecipeRequest createRecipeRequest) {
+        Recipe recipe = recipeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Recipe not found with id: " + id));
+
+        recipe.setTitle(createRecipeRequest.title());
+        recipe.setDescription(createRecipeRequest.description());
+        recipe.setCategory(createRecipeRequest.category());
+
+        return mapToDTO(recipeRepository.save(recipe));
+    }
+
     private RecipeDTO mapToDTO(Recipe recipe) {
         return new RecipeDTO(
                 recipe.getId(),

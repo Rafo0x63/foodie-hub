@@ -1,0 +1,102 @@
+{
+  "info": {
+    "name": "Foodie Hub",
+    "_postman_id": "foodie-hub-collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "recipeId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      { "key": "username", "value": "user", "type": "string" },
+      { "key": "password", "value": "user",  "type": "string" }
+    ]
+  },
+  "item": [
+    {
+      "name": "Recipes",
+      "item": [
+        {
+          "name": "Get All Recipes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/recipes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "recipes"]
+            }
+          }
+        },
+        {
+          "name": "Get Recipe By ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/recipes/{{recipeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "recipes", "{{recipeId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Recipe",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/recipes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "recipes"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Spaghetti Bolognese\",\n  \"description\": \"Classic Italian meat sauce pasta with ground beef and tomatoes.\",\n  \"category\": \"Pasta\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Recipe",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/recipes/{{recipeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "recipes", "{{recipeId}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Spaghetti Bolognese Updated\",\n  \"description\": \"Classic Italian meat sauce pasta with ground beef, tomatoes and red wine.\",\n  \"category\": \"Pasta\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Recipe",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/recipes/{{recipeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "recipes", "{{recipeId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
