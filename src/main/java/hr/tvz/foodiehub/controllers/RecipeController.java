@@ -1,10 +1,13 @@
 package hr.tvz.foodiehub.controllers;
 
+import hr.tvz.foodiehub.model.CreateRecipeRequest;
 import hr.tvz.foodiehub.model.RecipeDTO;
 import hr.tvz.foodiehub.services.interfaces.RecipeService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,5 +33,13 @@ public class RecipeController {
     public ResponseEntity<Void> deleteRecipeById(@PathVariable Long id) {
         recipeService.deleteRecipeById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<RecipeDTO> createNewRecipe(@Valid @RequestBody CreateRecipeRequest createRecipeRequest){
+        RecipeDTO recipeDTO = recipeService.createNewRecipe(createRecipeRequest);
+        return ResponseEntity
+                .created(URI.create("/api/recipes/" + recipeDTO.getId()))
+                .body(recipeDTO);
     }
 }

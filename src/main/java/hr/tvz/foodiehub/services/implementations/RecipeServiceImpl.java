@@ -1,6 +1,7 @@
 package hr.tvz.foodiehub.services.implementations;
 
 import hr.tvz.foodiehub.entities.Recipe;
+import hr.tvz.foodiehub.model.CreateRecipeRequest;
 import hr.tvz.foodiehub.model.RecipeDTO;
 import hr.tvz.foodiehub.repositories.RecipeRepository;
 import hr.tvz.foodiehub.services.interfaces.RecipeService;
@@ -39,6 +40,17 @@ public class RecipeServiceImpl implements RecipeService {
         }
 
         recipeRepository.deleteById(id);
+    }
+
+    @Override
+    public RecipeDTO createNewRecipe(CreateRecipeRequest createRecipeRequest) {
+        Recipe newRecipe = new Recipe();
+        newRecipe.setTitle(createRecipeRequest.title());
+        newRecipe.setDescription(createRecipeRequest.description());
+        newRecipe.setCategory(createRecipeRequest.category());
+
+        Recipe recipe = recipeRepository.save(newRecipe);
+        return mapToDTO(recipe);
     }
 
     private RecipeDTO mapToDTO(Recipe recipe) {
