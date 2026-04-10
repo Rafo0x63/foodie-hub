@@ -1,99 +1,116 @@
-<section class="mx-auto max-w-7xl p-6">
-  <div class="mb-6">
-    <p-button
-      icon="pi pi-arrow-left"
-      label="Povratak na recepte"
-      severity="secondary"
-      [outlined]="true"
-      styleClass="!rounded-xl"
-      (onClick)="goBack()"
-    ></p-button>
+<div class="min-h-screen bg-white">
+
+  <!-- Breadcrumb bar -->
+  <div class="bg-gray-50 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <button
+        type="button"
+        (click)="goBack()"
+        class="inline-flex items-center gap-2 text-gray-600 transition-colors hover:text-orange-500"
+      >
+        <i class="pi pi-arrow-left text-sm"></i>
+        Povratak na recepte
+      </button>
+    </div>
   </div>
 
-  @if (loading()) {
-    <div class="flex justify-center py-16">
-      <p-progressSpinner></p-progressSpinner>
-    </div>
-  } @else if (notFound() || !recipeData()) {
-    <p-card styleClass="!rounded-2xl !shadow-sm">
-      <div class="py-10 text-center">
-        <div class="mb-4">
-          <i class="pi pi-exclamation-circle text-5xl text-gray-400"></i>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Loading state -->
+    @if (loading()) {
+      <div class="py-24 text-center">
+        <i class="pi pi-spin pi-spinner text-4xl text-orange-500 block mb-4"></i>
+        <p class="text-gray-600">Učitavanje recepta...</p>
+      </div>
+
+    <!-- Not found state -->
+    } @else if (notFound() || !recipeData()) {
+      <div class="py-24 text-center">
+        <div class="mb-4 inline-flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
+          <i class="pi pi-exclamation-circle text-4xl text-gray-400"></i>
+        </div>
+        <h1 class="mb-3 text-3xl font-bold text-gray-900">Recept nije pronađen</h1>
+        <p class="mb-8 text-lg text-gray-600">Traženi recept ne postoji ili nije dostupan.</p>
+        <button
+          type="button"
+          (click)="goBack()"
+          class="inline-flex items-center gap-2 rounded-lg bg-orange-500 px-6 py-3 text-white transition-colors hover:bg-orange-600"
+        >
+          <i class="pi pi-arrow-left"></i>
+          Povratak na popis
+        </button>
+      </div>
+
+    <!-- Recipe content -->
+    } @else {
+      <!-- Header: image + info -->
+      <div class="mb-12 grid gap-8 lg:grid-cols-2">
+
+        <!-- Main image -->
+        <div class="relative overflow-hidden rounded-2xl shadow-xl">
+          <img
+            [src]="'https://picsum.photos/800/600?random=' + recipeData()!.id"
+            [alt]="recipeData()!.title"
+            class="h-[500px] w-full object-cover"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
+
+          <!-- Badges overlay -->
+          <div class="absolute bottom-4 left-4 flex items-center gap-2">
+            <span class="rounded-full bg-orange-500 px-4 py-1.5 text-sm font-semibold text-white">
+              {{ recipeData()!.category }}
+            </span>
+            <span class="rounded-full bg-black/40 px-3 py-1.5 text-sm text-white backdrop-blur-sm">
+              #{{ recipeData()!.id }}
+            </span>
+          </div>
         </div>
 
-        <h2 class="mb-2 text-2xl font-bold text-gray-900">Recept nije pronađen</h2>
+        <!-- Recipe info -->
+        <div class="flex flex-col gap-6">
 
-        <p class="mb-6 text-gray-600">Traženi recept ne postoji ili nije dostupan.</p>
-
-        <p-button
-          icon="pi pi-arrow-left"
-          label="Natrag na popis"
-          styleClass="!rounded-xl"
-          (onClick)="goBack()"
-        ></p-button>
-      </div>
-    </p-card>
-  } @else {
-    <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
-      <section class="min-w-0">
-        <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-          <div class="relative overflow-hidden bg-gray-100">
-            <img
-              [src]="'https://picsum.photos/1200/700?random=' + recipeData()!.id"
-              alt="Recipe image"
-              class="aspect-[16/8] w-full object-cover"
-            />
-
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"
-            ></div>
-
-            <div class="absolute bottom-4 left-4 flex items-center gap-3">
-              <span
-                class="rounded-full bg-white/90 px-4 py-1.5 text-sm font-semibold text-gray-800 backdrop-blur-sm"
-              >
+          <!-- Title & description -->
+          <div>
+            <div class="mb-3 flex items-center gap-2">
+              <span class="rounded-full bg-orange-100 px-3 py-1 text-sm text-orange-700">
                 {{ recipeData()!.category }}
               </span>
-
-              <span class="rounded-full bg-black/40 px-3 py-1.5 text-sm text-white">
-                #{{ recipeData()!.id }}
-              </span>
             </div>
-          </div>
-
-          <div class="p-6 md:p-8">
-            <h1 class="mb-4 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+            <h1 class="mb-4 text-4xl font-bold tracking-tight text-gray-900">
               {{ recipeData()!.title }}
             </h1>
-
-            <p class="max-w-3xl text-base leading-8 text-gray-700 md:text-lg">
+            <p class="text-lg leading-8 text-gray-600">
               {{ recipeData()!.description }}
             </p>
           </div>
-        </div>
-      </section>
 
-      <aside class="min-w-0">
-        <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-          <h2 class="mb-5 text-lg font-semibold text-gray-900">Informacije</h2>
-
-          <div class="space-y-4">
-            <div class="rounded-xl border border-gray-100 bg-gray-50 p-4">
-              <div class="mb-1 text-sm text-gray-500">ID recepta</div>
-              <div class="text-lg font-semibold text-gray-900">
-                {{ recipeData()!.id }}
+          <!-- Info cards -->
+          <div class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+            <h2 class="mb-5 text-lg font-semibold text-gray-900">Informacije o receptu</h2>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="rounded-xl bg-gray-50 p-4">
+                <div class="mb-1 text-sm text-gray-500">ID recepta</div>
+                <div class="text-2xl font-semibold text-gray-900">{{ recipeData()!.id }}</div>
               </div>
-            </div>
-
-            <div class="rounded-xl border border-gray-100 bg-gray-50 p-4">
-              <div class="mb-1 text-sm text-gray-500">Kategorija</div>
-              <div class="text-lg font-semibold text-gray-900">
-                {{ recipeData()!.category }}
+              <div class="rounded-xl bg-gray-50 p-4">
+                <div class="mb-1 text-sm text-gray-500">Kategorija</div>
+                <div class="text-2xl font-semibold text-gray-900">{{ recipeData()!.category }}</div>
               </div>
             </div>
           </div>
+
+          <!-- Description card -->
+          <div class="flex-1 rounded-xl bg-gradient-to-br from-orange-50 to-yellow-50 border border-orange-100 p-6">
+            <h3 class="mb-3 flex items-center gap-2 font-semibold text-gray-900">
+              <i class="pi pi-book text-orange-500"></i>
+              O receptu
+            </h3>
+            <p class="leading-7 text-gray-700">{{ recipeData()!.description }}</p>
+          </div>
+
         </div>
-      </aside>
-    </div>
-  }
-</section>
+      </div>
+    }
+
+  </main>
+</div>
