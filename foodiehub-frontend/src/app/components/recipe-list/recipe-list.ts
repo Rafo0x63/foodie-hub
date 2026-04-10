@@ -3,14 +3,16 @@ import { Component, DestroyRef, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { RecipeModel } from '../../models/recipe.model';
 import { RecipeService } from '../../core/services/recipe.service';
+import { Button, ButtonModule } from "primeng/button";
+
 
 @Component({
   selector: 'app-recipe-list',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, ButtonModule],
   templateUrl: './recipe-list.html',
   styleUrl: './recipe-list.css',
 })
@@ -18,6 +20,7 @@ export class RecipeListComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly fb = inject(FormBuilder);
   private readonly recipeService = inject(RecipeService);
+  private readonly router = inject(Router)
 
   recipes: RecipeModel[] = [];
   filteredRecipes: RecipeModel[] = [];
@@ -101,6 +104,10 @@ export class RecipeListComponent {
     );
 
     this.applyFilters();
+  }
+
+  editRecipe(id: number) {
+    this.router.navigate(['/edit-recipe', id]);
   }
 
   private applyFilters(): void {

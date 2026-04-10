@@ -1,10 +1,10 @@
-<section class="mx-auto max-w-[1920px] p-6">
+<section class="mx-auto max-w-480 p-6">
   <header
     class="mb-6 flex flex-col gap-4 border-b border-gray-200 pb-4 lg:flex-row lg:items-end lg:justify-between"
   >
     <div class="space-y-1">
       <h2 class="flex items-center text-3xl font-bold tracking-tight text-gray-900">
-        <i class="pi pi-book mr-3 !text-[2rem] text-orange-500"></i>
+        <i class="pi pi-book mr-3 text-[2rem]! text-orange-500"></i>
         Popis recepata
       </h2>
 
@@ -81,17 +81,17 @@
     <div class="py-16 text-center text-gray-600">Učitavanje recepata...</div>
   } @else if (filteredRecipes.length > 0) {
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      @for (recipe of filteredRecipes; track recipe.id) {
-        <a
-          [routerLink]="['/recipe', recipe.id]"
-          class="group rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-all hover:shadow-lg"
-        >
+  @for (recipe of filteredRecipes; track recipe.id) {
+    <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-all hover:shadow-lg">
+        <a [routerLink]="['/recipe', recipe.id]" class="group block cursor-pointer">
           <div class="mb-4 flex items-start justify-between gap-3">
             <span class="rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-700">
               {{ recipe.category }}
             </span>
 
-            <span class="text-sm text-gray-400"> #{{ recipe.id }} </span>
+            <span class="text-sm text-gray-400">
+              #{{ recipe.id }}
+            </span>
           </div>
 
           <h3 class="mb-3 line-clamp-2 text-xl font-semibold text-gray-900">
@@ -106,8 +106,18 @@
             Otvori detalje
           </div>
         </a>
-      }
-    </div>
+
+        <div class="mt-4 flex justify-end">
+          <p-button
+            label="Uredi"
+            icon="pi pi-pencil"
+            styleClass="!rounded-xl !px-4 !py-2 !text-sm hover:!bg-orange-50 hover:!text-orange-500"
+            (onClick)="editRecipe(recipe.id)"
+          ></p-button>
+        </div>
+      </div>
+    }
+  </div>
   } @else {
     <div class="py-16 text-center">
       <div class="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">

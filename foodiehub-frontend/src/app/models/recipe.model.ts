@@ -44,11 +44,11 @@ export interface CreateRecipeRequest {
   title: string;
   description: string;
   category: string;
-  difficulty: string;
+  image?: string;
+  /*difficulty: string;
   totalTime: string;
   prepTime?: string;
   cookTime?: string;
-  image: string;
   servings: number;
-  calories?: number;
+  calories?: number;*/
 }

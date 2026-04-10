@@ -15,7 +15,7 @@ import { TagModule } from 'primeng/tag';
 @Component({
   selector: 'app-recipe-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, ButtonModule, ProgressSpinnerModule, CardModule, TagModule],
+  imports: [CommonModule, ButtonModule, ProgressSpinnerModule, CardModule, TagModule],
   templateUrl: './recipe-detail.html',
   styleUrl: './recipe-detail.css',
 })
