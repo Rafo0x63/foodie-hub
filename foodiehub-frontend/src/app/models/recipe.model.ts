@@ -38,22 +38,17 @@ export interface RecipeModel {
   title: string;
   description: string;
   category: string;
+}
+
+export interface CreateRecipeRequest {
+  title: string;
+  description: string;
+  category: string;
   difficulty: string;
   totalTime: string;
   prepTime?: string;
   cookTime?: string;
   image: string;
-  author: RecipeAuthor;
-  nutrition: RecipeNutrition;
   servings: number;
-  rating: number;
-  reviews: number;
-  likes: number;
-  views: number;
-  saves?: number;
-  ingredients?: RecipeIngredient[];
-  steps?: RecipeStep[];
-  tips?: string[];
-  comments?: RecipeComment[];
-  tags?: string[];
+  calories?: number;
 }

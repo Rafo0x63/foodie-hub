@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
@@ -15,4 +16,13 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     @Query("SELECT r FROM Recipe r JOIN r.recipeTags rt JOIN rt.tag t WHERE t.name = :tag")
     List<Recipe> findByTagName(@Param("tag") String tag);
+
+    List<Recipe> findByDeletedAtIsNull();
+
+    List<Recipe> findByDeletedAtIsNotNull();
+
+    Optional<Recipe> findByIdAndDeletedAtIsNull(Long id);
+
+
+
 }

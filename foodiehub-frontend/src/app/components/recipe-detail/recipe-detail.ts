@@ -1,42 +1,69 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { finalize } from 'rxjs';
+
 import { RecipeModel } from '../../models/recipe.model';
-import { Recipe } from '../../core/services/recipe';
+import { RecipeService } from '../../core/services/recipe.service';
+
+import { ButtonModule } from 'primeng/button';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-recipe-detail',
-  imports: [RouterLink, FormsModule, NgClass],
+  standalone: true,
+  imports: [CommonModule, RouterLink, ButtonModule, ProgressSpinnerModule, CardModule, TagModule],
   templateUrl: './recipe-detail.html',
   styleUrl: './recipe-detail.css',
 })
-export class RecipeDetail implements OnInit {
-  private route = inject(ActivatedRoute);
-  private recipeService = inject(Recipe);
+export class RecipeDetailComponent {
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly route = inject(ActivatedRoute);
+  private readonly recipeService = inject(RecipeService);
+  private readonly router = inject(Router);
 
-  recipeData: RecipeModel | null = null;
-  liked = false;
-  saved = false;
-  following = false;
-  newComment = '';
-  commentRating = 0;
+  recipeData = signal<RecipeModel | null>(null);
+  loading = signal(false);
+  notFound = signal(false);
 
-  readonly starValues = [1, 2, 3, 4, 5];
-
-  ngOnInit() {
+  constructor() {
     const idParam = this.route.snapshot.paramMap.get('id');
-    const id = idParam !== null ? +idParam : null;
-    this.recipeData = id !== null ? this.recipeService.getById(id) : null;
+    const id = idParam ? Number(idParam) : null;
+
+    if (!id || Number.isNaN(id)) {
+      this.notFound.set(true);
+      return;
+    }
+
+    this.loadRecipe(id);
   }
 
-  getStarsArray(count: number): number[] {
-    return Array.from({ length: count }, (_, i) => i);
+  loadRecipe(id: number): void {
+    this.loading.set(true);
+    this.notFound.set(false);
+
+    this.recipeService
+      .getById(id)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.loading.set(false)),
+      )
+      .subscribe({
+        next: (recipe) => {
+          this.recipeData.set(recipe);
+        },
+        error: (err) => {
+          console.error('Greška pri dohvaćanju recepta', err);
+          this.recipeData.set(null);
+          this.notFound.set(true);
+        },
+      });
   }
 
-  onImageError(event: Event) {
-    const img = event.target as HTMLImageElement;
-    img.onerror = null;
-    img.src = '/Placeholder.png';
+  goBack(): void {
+    this.router.navigate(['/recipe-list']);
   }
 }
