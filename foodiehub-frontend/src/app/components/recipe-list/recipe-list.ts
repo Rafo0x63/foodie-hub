@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 import { Router, RouterLink } from '@angular/router';
 import { RecipeModel } from '../../models/recipe.model';
 import { RecipeService } from '../../core/services/recipe.service';
-import { Button, ButtonModule } from "primeng/button";
-
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-recipe-list',
@@ -20,19 +19,22 @@ export class RecipeListComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly fb = inject(FormBuilder);
   private readonly recipeService = inject(RecipeService);
-  private readonly router = inject(Router)
+  private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   recipes: RecipeModel[] = [];
   filteredRecipes: RecipeModel[] = [];
   loading = false;
   showFilters = false;
 
+  deletingRecipeId: number | null = null;
+
   readonly categories = [
     { label: 'Sve', value: null },
-    { label: 'Tjestenina', value: 'Tjestenina' },
-    { label: 'Salate', value: 'Salate' },
-    { label: 'Deserti', value: 'Deserti' },
-    { label: 'Doručak', value: 'Doručak' },
+    { label: 'Tjestenina', value: 'Pasta' },
+    { label: 'Salata', value: 'Salad' },
+    { label: 'Deserti', value: 'Deserts' },
+    { label: 'Pizza', value: 'Pizza' },
     { label: 'Azijska kuhinja', value: 'Azijska kuhinja' },
   ];
 
@@ -66,6 +68,7 @@ export class RecipeListComponent {
           this.recipes = result;
           this.applyFilters();
           this.loading = false;
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error('Greška pri dohvaćanju recepata', err);
@@ -106,8 +109,41 @@ export class RecipeListComponent {
     this.applyFilters();
   }
 
-  editRecipe(id: number) {
+  editRecipe(id: number): void {
     this.router.navigate(['/edit-recipe', id]);
+  }
+
+  deleteRecipe(recipe: RecipeModel): void {
+    const confirmed = window.confirm(`Jesi siguran da želiš obrisati recept "${recipe.title}"?`);
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.deletingRecipeId = recipe.id;
+
+    this.recipeService
+      .delete(recipe.id)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => {
+          this.deletingRecipeId = null;
+          this.cdr.detectChanges();
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.recipes = this.recipes.filter((r) => r.id !== recipe.id);
+          this.applyFilters();
+        },
+        error: (err) => {
+          console.error('Greška pri brisanju recepta', err);
+        },
+      });
+  }
+
+  addRecipe(): void {
+    this.router.navigate(['/add-recipe']);
   }
 
   private applyFilters(): void {
