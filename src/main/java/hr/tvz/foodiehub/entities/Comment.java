@@ -20,6 +20,8 @@ public class Comment {
     private int rating;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;

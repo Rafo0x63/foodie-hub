@@ -18,6 +18,7 @@ public class Recipe {
     private String description;
     private String image;
     private String category;
+    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
     @ManyToOne

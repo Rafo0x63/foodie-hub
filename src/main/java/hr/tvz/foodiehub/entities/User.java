@@ -17,5 +17,6 @@ public class User {
     private Long id;
     private String name;
     private String email;
+    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 }
