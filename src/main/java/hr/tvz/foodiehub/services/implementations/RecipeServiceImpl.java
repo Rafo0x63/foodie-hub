@@ -7,6 +7,7 @@ import hr.tvz.foodiehub.repositories.RecipeRepository;
 import hr.tvz.foodiehub.services.interfaces.RecipeService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,7 +20,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public List<RecipeDTO> getAllRecipes() {
-        return recipeRepository.findAll()
+        return recipeRepository.findByDeletedAtIsNull()
                 .stream()
                 .map(this::mapToDTO)
                 .toList();
@@ -27,7 +28,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public RecipeDTO getRecipeById(Long id) {
-        Recipe recipe = recipeRepository.findById(id)
+        Recipe recipe = recipeRepository.findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new RuntimeException("Recipe not found with id: " + id));
 
         return mapToDTO(recipe);
@@ -35,11 +36,11 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public void deleteRecipeById(Long id) {
-        if (!recipeRepository.existsById(id)) {
-            throw new RuntimeException("Recipe not found with id: " + id);
-        }
+        Recipe recipe = recipeRepository.findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new RuntimeException("Recipe not found with id: " + id));
 
-        recipeRepository.deleteById(id);
+        recipe.setDeletedAt(LocalDateTime.now());
+        recipeRepository.save(recipe);
     }
 
     @Override
@@ -48,6 +49,7 @@ public class RecipeServiceImpl implements RecipeService {
         newRecipe.setTitle(createRecipeRequest.title());
         newRecipe.setDescription(createRecipeRequest.description());
         newRecipe.setCategory(createRecipeRequest.category());
+        newRecipe.setDeletedAt(null);
 
         Recipe recipe = recipeRepository.save(newRecipe);
         return mapToDTO(recipe);
@@ -55,7 +57,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public RecipeDTO updateRecipe(Long id, CreateRecipeRequest createRecipeRequest) {
-        Recipe recipe = recipeRepository.findById(id)
+        Recipe recipe = recipeRepository.findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new RuntimeException("Recipe not found with id: " + id));
 
         recipe.setTitle(createRecipeRequest.title());

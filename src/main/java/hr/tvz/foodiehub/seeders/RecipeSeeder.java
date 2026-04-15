@@ -12,7 +12,7 @@ public class RecipeSeeder {
     @Bean
     CommandLineRunner seedRecipes(RecipeRepository recipeRepository) {
         return args -> {
-            if (recipeRepository.count() == 0) {
+            if (recipeRepository.findByDeletedAtIsNull().isEmpty()) {
                 Recipe recipe1 = new Recipe();
                 recipe1.setTitle("Carbonara");
                 recipe1.setDescription("Classic pasta with eggs, cheese and pancetta.");

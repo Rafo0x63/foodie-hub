@@ -3,6 +3,7 @@ package hr.tvz.foodiehub.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -17,6 +18,8 @@ public class Recipe {
     private String description;
     private String image;
     private String category;
+    private LocalDateTime deletedAt;
+
     @ManyToOne
     @JoinColumn(name = "chef_id")
     private Chef chef;

@@ -1,0 +1,197 @@
+<div class="min-h-screen bg-gray-50">
+
+  <!-- Hero section -->
+  <div class="pt-16 pb-8 bg-gradient-to-b from-orange-50 to-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+      <div>
+        <h1 class="text-4xl lg:text-5xl text-gray-900 mb-2">Svi recepti</h1>
+        <p class="text-xl text-gray-600">Pronađi savršen recept za svaku priliku</p>
+      </div>
+      <button
+        type="button"
+        (click)="addRecipe()"
+        class="flex items-center gap-2 rounded-lg bg-orange-500 px-6 py-3 text-sm font-medium text-white transition hover:bg-orange-600"
+      >
+        <i class="pi pi-plus"></i>
+        Dodaj recept
+      </button>
+    </div>
+  </div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Search and filters -->
+    <div class="mb-8 space-y-4">
+
+      <!-- Search bar + filters toggle -->
+      <div class="flex gap-4">
+        <div class="relative flex-1">
+          <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+          <input
+            type="text"
+            [formControl]="searchControl"
+            placeholder="Pretraži recepte po nazivu ili opisu..."
+            class="w-full rounded-lg border border-gray-300 py-3 pl-12 pr-4 text-black focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
+          />
+        </div>
+        <button
+          type="button"
+          (click)="toggleFilters()"
+          [class]="showFilters
+            ? 'flex items-center gap-2 rounded-lg bg-orange-500 px-6 py-3 text-sm font-medium text-white transition'
+            : 'flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-6 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50'"
+        >
+          <i class="pi pi-sliders-h"></i>
+          Filteri
+        </button>
+      </div>
+
+      <!-- Category tabs -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-2">
+        @for (category of categories; track category.value) {
+          <button
+            type="button"
+            (click)="filterForm.get('category')?.setValue(category.value)"
+            [class]="filterForm.value.category === category.value
+              ? 'whitespace-nowrap rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white transition'
+              : 'whitespace-nowrap rounded-lg bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100'"
+          >
+            {{ category.label }}
+          </button>
+        }
+      </div>
+
+      <!-- Advanced filters panel -->
+      @if (showFilters) {
+        <section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+          <form [formGroup]="filterForm" class="grid gap-6 md:grid-cols-2">
+            <div>
+              <label class="mb-2 block text-sm font-semibold text-gray-900">Kategorija</label>
+              <select
+                formControlName="category"
+                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              >
+                @for (category of categories; track category.value) {
+                  <option [ngValue]="category.value">{{ category.label }}</option>
+                }
+              </select>
+            </div>
+
+            <div>
+              <label class="mb-2 block text-sm font-semibold text-gray-900">Sortiraj po</label>
+              <select
+                formControlName="sortBy"
+                class="w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              >
+                @for (option of sortOptions; track option.value) {
+                  <option [value]="option.value">{{ option.label }}</option>
+                }
+              </select>
+            </div>
+          </form>
+
+          <div class="mt-6 flex items-center justify-between border-t border-gray-200 pt-4">
+            <p class="text-sm text-gray-600">
+              Pronađeno <span class="font-semibold text-gray-900">{{ filteredRecipes.length }}</span> recepata
+            </p>
+            <button
+              type="button"
+              (click)="clearFilters()"
+              class="text-sm text-orange-500 transition hover:text-orange-600"
+            >
+              Poništi filtere
+            </button>
+          </div>
+        </section>
+      }
+    </div>
+
+    <!-- Results count -->
+    <div class="mb-6">
+      <p class="text-gray-600">
+        Prikazano <span class="font-semibold text-gray-900">{{ filteredRecipes.length }}</span> recepata
+      </p>
+    </div>
+
+    <!-- Loading state -->
+    @if (loading) {
+      <div class="py-16 text-center text-gray-600">
+        <i class="pi pi-spin pi-spinner text-3xl text-orange-500 mb-4 block"></i>
+        Učitavanje recepata...
+      </div>
+
+    <!-- Recipe grid -->
+    } @else if (filteredRecipes.length > 0) {
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        @for (recipe of filteredRecipes; track recipe.id) {
+          <div class="group overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
+
+            <a [routerLink]="['/recipe', recipe.id]" class="block cursor-pointer">
+              <div class="relative overflow-hidden bg-gray-100">
+                <img
+                  [src]="'https://picsum.photos/400/250?random=' + recipe.id"
+                  alt="Recipe image"
+                  class="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent"></div>
+                <span class="absolute bottom-3 left-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-semibold text-white">
+                  {{ recipe.category }}
+                </span>
+              </div>
+
+              <div class="p-4 space-y-2">
+                <h3 class="line-clamp-2 text-lg font-semibold text-gray-900">
+                  {{ recipe.title }}
+                </h3>
+                <p class="line-clamp-3 text-sm leading-6 text-gray-600">
+                  {{ recipe.description }}
+                </p>
+                <div class="pt-2 text-sm font-medium text-orange-600 transition-colors group-hover:text-orange-500">
+                  Klikni za detalje
+                </div>
+              </div>
+            </a>
+
+            <div class="flex gap-3 px-4 pb-4">
+              <p-button
+                label="Uredi"
+                icon="pi pi-pencil"
+                styleClass="!rounded-xl !px-4 !py-2 !text-sm hover:!bg-orange-50 hover:!text-orange-500"
+                (onClick)="editRecipe(recipe.id)"
+              ></p-button>
+
+              <p-button
+                label="Obriši"
+                icon="pi pi-trash"
+                severity="danger"
+                [loading]="deletingRecipeId === recipe.id"
+                [disabled]="deletingRecipeId === recipe.id"
+                styleClass="!rounded-xl !px-4 !py-2 !text-sm"
+                (onClick)="deleteRecipe(recipe)"
+              ></p-button>
+            </div>
+
+          </div>
+        }
+      </div>
+
+    <!-- Empty state -->
+    } @else {
+      <div class="py-16 text-center">
+        <div class="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+          <i class="pi pi-search text-3xl text-gray-400"></i>
+        </div>
+        <h3 class="mb-2 text-xl font-semibold text-gray-900">Nema pronađenih recepata</h3>
+        <p class="mb-6 text-gray-600">Pokušaj promijeniti pojam pretrage ili filtere.</p>
+        <button
+          type="button"
+          (click)="clearFilters()"
+          class="rounded-lg bg-orange-500 px-6 py-3 text-white transition-colors hover:bg-orange-600"
+        >
+          Poništi filtere
+        </button>
+      </div>
+    }
+
+  </main>
+</div>
