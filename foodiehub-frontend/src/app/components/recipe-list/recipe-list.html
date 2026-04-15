@@ -1,6 +1,5 @@
 <div class="min-h-screen bg-gray-50">
 
-  <!-- Hero section -->
   <div class="pt-16 pb-8 bg-gradient-to-b from-orange-50 to-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
       <div>
@@ -19,11 +18,7 @@
   </div>
 
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
-    <!-- Search and filters -->
     <div class="mb-8 space-y-4">
-
-      <!-- Search bar + filters toggle -->
       <div class="flex gap-4">
         <div class="relative flex-1">
           <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
@@ -46,7 +41,6 @@
         </button>
       </div>
 
-      <!-- Category tabs -->
       <div class="flex items-center gap-2 overflow-x-auto pb-2">
         @for (category of categories; track category.value) {
           <button
@@ -61,7 +55,6 @@
         }
       </div>
 
-      <!-- Advanced filters panel -->
       @if (showFilters) {
         <section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
           <form [formGroup]="filterForm" class="grid gap-6 md:grid-cols-2">
@@ -106,21 +99,17 @@
       }
     </div>
 
-    <!-- Results count -->
     <div class="mb-6">
       <p class="text-gray-600">
         Prikazano <span class="font-semibold text-gray-900">{{ filteredRecipes.length }}</span> recepata
       </p>
     </div>
 
-    <!-- Loading state -->
     @if (loading) {
       <div class="py-16 text-center text-gray-600">
         <i class="pi pi-spin pi-spinner text-3xl text-orange-500 mb-4 block"></i>
         Učitavanje recepata...
       </div>
-
-    <!-- Recipe grid -->
     } @else if (filteredRecipes.length > 0) {
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         @for (recipe of filteredRecipes; track recipe.id) {
@@ -175,7 +164,6 @@
         }
       </div>
 
-    <!-- Empty state -->
     } @else {
       <div class="py-16 text-center">
         <div class="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">

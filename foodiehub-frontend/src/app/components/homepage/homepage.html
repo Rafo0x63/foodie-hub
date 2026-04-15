@@ -1,0 +1,250 @@
+<div class="min-h-screen bg-[#f8f8f8] text-[#111827]">
+  <main class="mx-auto w-full max-w-7xl px-4  md:px-6 lg:px-8">
+    <section class="grid items-center gap-10 rounded-b-2xl bg-[#f6f1e8] px-6 py-10 md:px-10 lg:grid-cols-2 lg:px-14 lg:py-14">
+      <div class="max-w-xl">
+        <div class="mb-5 inline-flex items-center gap-2 rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-600">
+          <i class="pi pi-star-fill text-[10px]"></i>
+          <span>TikTok za kuharicu</span>
+        </div>
+
+        <h1 class="max-w-lg text-4xl font-semibold leading-tight tracking-tight text-slate-900 md:text-5xl">
+          Dijeli recepte,<br />
+          kuhaj, inspiriraj
+        </h1>
+
+        <p class="mt-5 max-w-lg text-lg leading-8 text-slate-600">
+          Pridruži se zajednici kulinarskih entuzijasta. Otkrij recepte s uputama korak po korak, planiraj obroke i automatski generiraj listu za kupovinu.
+        </p>
+
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <p-button label="Započni besplatno" (onClick)="toRegister()" icon="pi pi-arrow-right" iconPos="right" styleClass="!rounded-xl !border-orange-500 !bg-orange-500 !px-5 !py-3 !text-sm hover:!border-orange-600 hover:!bg-orange-600"></p-button>
+          <p-button label="Pogledaj recepte" (onClick)="toRecipeList()" severity="secondary" styleClass="!rounded-xl !border !border-slate-300 !bg-white !px-5 !py-3 !text-sm !text-slate-700 hover:!bg-slate-50"></p-button>
+        </div>
+
+        <div class="mt-8 flex flex-wrap items-center gap-8">
+          <div class="flex items-start gap-2">
+            <i class="pi pi-users mt-1 text-sm text-orange-500"></i>
+            <div>
+              <p class="text-lg font-semibold text-slate-900">50k+</p>
+              <p class="text-xs text-slate-500">Korisnika</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-2">
+            <i class="pi pi-book mt-1 text-sm text-orange-500"></i>
+            <div>
+              <p class="text-lg font-semibold text-slate-900">100k+</p>
+              <p class="text-xs text-slate-500">Recepata</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative mx-auto w-full max-w-135">
+        <div class="absolute -right-4 -top-4 h-full w-full rounded-4xl bg-[#f0cf79]"></div>
+        <div class="relative overflow-hidden rounded-4xl bg-white shadow-[0_20px_50px_rgba(15,23,42,0.12)]">
+          <img src="/recipe-img.jpg" alt="Hero slika recepta" class="h-80 w-full object-cover md:h-105" />
+        </div>
+      </div>
+    </section>
+
+    <section class="px-2 py-20 md:px-4">
+      <div class="mt-14 mx-auto max-w-3xl text-center">
+        <h2 class="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">Sve što trebaš za savršeno kuhanje</h2>
+        <p class="mx-auto mt-4 max-w-2xl text-lg leading-8 text-slate-500">
+          FoodieHub spaja dijeljenje recepata, planiranje obroka i društvenu mrežu kulinarskih entuzijasta na jednom mjestu.
+        </p>
+      </div>
+
+      <div class="mt-14 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:scale-105 transition-transform duration-300 ease-in-out">
+          <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+            <i class="pi pi-book text-base"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-slate-900">Recepti s koracima</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-500">
+            Kreiraj recepte s detaljnim uputama, fotografijama za svaki korak i preciznim sastojcima.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:scale-105 transition-transform duration-300 ease-in-out">
+          <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+            <i class="pi pi-star text-base"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-slate-900">Ocjene i komentari</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-500">
+            Ocijeni recepte od 1-5 zvjezdica, ostavi komentare i spremi omiljene recepte.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:scale-105 transition-transform duration-300 ease-in-out">
+          <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+            <i class="pi pi-calendar text-base"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-slate-900">Planer obroka</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-500">
+            Planiraj tjedne obroke jednostavnim drag &amp; drop sučeljem i izvezi plan u PDF.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:scale-105 transition-transform duration-300 ease-in-out">
+          <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+            <i class="pi pi-shopping-cart text-base"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-slate-900">Lista za kupovinu</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-500">
+            Automatski generiraj listu namirnica iz planera obroka, grupirano po kategorijama.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:scale-105 transition-transform duration-300 ease-in-out">
+          <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+            <i class="pi pi-images text-base"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-slate-900">Galerija fotografija</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-500">
+            Uploadaj više fotografija recepta s kompresijom i prikazom u galeriji.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm hover:scale-105 transition-transform duration-300 ease-in-out">
+          <div class="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-orange-100 text-orange-500">
+            <i class="pi pi-shield text-base"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-slate-900">Sigurnost i kvaliteta</h3>
+          <p class="mt-3 text-sm leading-7 text-slate-500">
+            Admin moderacija sadržaja, rang sustav kuhara i personalizirane preporuke.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="rounded-2xl bg-[#f3f5f7] px-5 py-12 md:px-8 lg:px-10">
+      <div class="text-center">
+        <h2 class="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">Popularni recepti</h2>
+        <p class="mt-3 text-lg text-slate-500">Najomiljeniji recepti naše zajednice</p>
+      </div>
+
+      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <article class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
+          <div class="relative">
+            <img src="/recipe-1.jpg" alt="Kremasta Carbonara" class="h-44 w-full object-cover" />
+            <button type="button" class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-500 shadow-sm">
+              <i class="pi pi-heart text-sm"></i>
+            </button>
+            <span class="absolute bottom-3 left-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white">Pasta</span>
+          </div>
+          <div class="p-4">
+            <h3 class="text-lg font-semibold text-slate-900">Kremasta Carbonara</h3>
+            <p class="mt-2 flex items-center gap-2 text-sm text-slate-500"><i class="pi pi-user text-xs"></i><span>Ana Marić</span></p>
+            <div class="mt-4 flex items-center justify-between text-sm text-slate-500">
+              <span class="flex items-center gap-1"><i class="pi pi-clock text-xs"></i>25 min</span>
+              <span class="flex items-center gap-1 text-amber-500"><i class="pi pi-star-fill text-xs"></i>4.8</span>
+              <span class="flex items-center gap-1"><i class="pi pi-heart text-xs"></i>342</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
+          <div class="relative">
+            <img src="/recipe-2.jpg" alt="Buddha Bowl" class="h-44 w-full object-cover" />
+            <button type="button" class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-500 shadow-sm">
+              <i class="pi pi-heart text-sm"></i>
+            </button>
+            <span class="absolute bottom-3 left-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white">Salate</span>
+          </div>
+          <div class="p-4">
+            <h3 class="text-lg font-semibold text-slate-900">Buddha Bowl</h3>
+            <p class="mt-2 flex items-center gap-2 text-sm text-slate-500"><i class="pi pi-user text-xs"></i><span>Luka Horvat</span></p>
+            <div class="mt-4 flex items-center justify-between text-sm text-slate-500">
+              <span class="flex items-center gap-1"><i class="pi pi-clock text-xs"></i>15 min</span>
+              <span class="flex items-center gap-1 text-amber-500"><i class="pi pi-star-fill text-xs"></i>4.9</span>
+              <span class="flex items-center gap-1"><i class="pi pi-heart text-xs"></i>528</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
+          <div class="relative">
+            <img src="/recipe-3.jpg" alt="Čokoladna Torta" class="h-44 w-full object-cover" />
+            <button type="button" class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-500 shadow-sm">
+              <i class="pi pi-heart text-sm"></i>
+            </button>
+            <span class="absolute bottom-3 left-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white">Deserti</span>
+          </div>
+          <div class="p-4">
+            <h3 class="text-lg font-semibold text-slate-900">Čokoladna Torta</h3>
+            <p class="mt-2 flex items-center gap-2 text-sm text-slate-500"><i class="pi pi-user text-xs"></i><span>Petra Kovač</span></p>
+            <div class="mt-4 flex items-center justify-between text-sm text-slate-500">
+              <span class="flex items-center gap-1"><i class="pi pi-clock text-xs"></i>60 min</span>
+              <span class="flex items-center gap-1 text-amber-500"><i class="pi pi-star-fill text-xs"></i>5.0</span>
+              <span class="flex items-center gap-1"><i class="pi pi-heart text-xs"></i>891</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
+          <div class="relative">
+            <img src="/recipe-4.jpg" alt="Fluffy Palačinke" class="h-44 w-full object-cover" />
+            <button type="button" class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-500 shadow-sm">
+              <i class="pi pi-heart text-sm"></i>
+            </button>
+            <span class="absolute bottom-3 left-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white">Doručak</span>
+          </div>
+          <div class="p-4">
+            <h3 class="text-lg font-semibold text-slate-900">Fluffy Palačinke</h3>
+            <p class="mt-2 flex items-center gap-2 text-sm text-slate-500"><i class="pi pi-user text-xs"></i><span>Marko Babić</span></p>
+            <div class="mt-4 flex items-center justify-between text-sm text-slate-500">
+              <span class="flex items-center gap-1"><i class="pi pi-clock text-xs"></i>20 min</span>
+              <span class="flex items-center gap-1 text-amber-500"><i class="pi pi-star-fill text-xs"></i>4.7</span>
+              <span class="flex items-center gap-1"><i class="pi pi-heart text-xs"></i>412</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200">
+          <div class="relative">
+            <img src="/recipe-5.jpg" alt="Ramen Bowl" class="h-44 w-full object-cover" />
+            <button type="button" class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-500 shadow-sm">
+              <i class="pi pi-heart text-sm"></i>
+            </button>
+            <span class="absolute bottom-3 left-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-medium text-white">Azijska kuhinja</span>
+          </div>
+          <div class="p-4">
+            <h3 class="text-lg font-semibold text-slate-900">Ramen Bowl</h3>
+            <p class="mt-2 flex items-center gap-2 text-sm text-slate-500"><i class="pi pi-user text-xs"></i><span>Sara Novak</span></p>
+            <div class="mt-4 flex items-center justify-between text-sm text-slate-500">
+              <span class="flex items-center gap-1"><i class="pi pi-clock text-xs"></i>35 min</span>
+              <span class="flex items-center gap-1 text-amber-500"><i class="pi pi-star-fill text-xs"></i>4.9</span>
+              <span class="flex items-center gap-1"><i class="pi pi-heart text-xs"></i>673</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="mt-10 flex justify-center">
+        <p-button label="Prikaži sve recepte" severity="secondary" (onClick)="toRecipeList()" styleClass="!rounded-xl !border !border-slate-300 !bg-white !px-5 !py-3 !text-sm !text-slate-700 hover:!bg-slate-50"></p-button>
+      </div>
+    </section>
+
+    <section class="mt-14 rounded-t-2xl bg-orange-500 px-6 py-16 text-center text-white md:px-10 md:py-20">
+      <div class="mx-auto max-w-3xl">
+        <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-white/20">
+          <i class="pi pi-home text-xl"></i>
+        </div>
+
+        <h2 class="text-4xl font-semibold tracking-tight md:text-5xl">Spreman za kulinarsku avanturu?</h2>
+        <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-orange-50">
+          Pridruži se tisućama korisnika koji svakodnevno dijele recepte, planiraju obroke i otkrivaju nove okuse.
+        </p>
+
+        <div class="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+          <p-button label="Registriraj se besplatno" (onClick)="toRegister()" icon="pi pi-arrow-right" iconPos="right" styleClass="!rounded-xl !border-white !bg-white !px-6 !py-3 !text-sm !text-orange-500 hover:!bg-orange-50"></p-button>
+          <p-button label="Saznaj više" severity="secondary" styleClass="!rounded-xl !border !border-white !bg-transparent !px-6 !py-3 !text-sm !text-white hover:!bg-white/10"></p-button>
+        </div>
+
+        <p class="mt-6 text-sm text-orange-100">Bez kreditne kartice • Besplatno zauvijek • Podrška 24/7</p>
+      </div>
+    </section>
+  </main>
+</div>
