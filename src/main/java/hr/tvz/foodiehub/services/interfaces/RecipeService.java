@@ -1,6 +1,6 @@
 package hr.tvz.foodiehub.services.interfaces;
-import hr.tvz.foodiehub.model.CreateRecipeRequest;
-import hr.tvz.foodiehub.model.RecipeDTO;
+import hr.tvz.foodiehub.model.requests.CreateRecipeRequest;
+import hr.tvz.foodiehub.model.dtos.RecipeDTO;
 
 import java.util.List;
 

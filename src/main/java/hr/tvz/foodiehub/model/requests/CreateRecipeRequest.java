@@ -1,4 +1,4 @@
-package hr.tvz.foodiehub.model;
+package hr.tvz.foodiehub.model.requests;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

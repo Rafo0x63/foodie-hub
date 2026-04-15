@@ -1,8 +1,8 @@
 package hr.tvz.foodiehub.services.implementations;
 
 import hr.tvz.foodiehub.entities.Recipe;
-import hr.tvz.foodiehub.model.CreateRecipeRequest;
-import hr.tvz.foodiehub.model.RecipeDTO;
+import hr.tvz.foodiehub.model.requests.CreateRecipeRequest;
+import hr.tvz.foodiehub.model.dtos.RecipeDTO;
 import hr.tvz.foodiehub.repositories.RecipeRepository;
 import hr.tvz.foodiehub.services.interfaces.RecipeService;
 import org.springframework.stereotype.Service;

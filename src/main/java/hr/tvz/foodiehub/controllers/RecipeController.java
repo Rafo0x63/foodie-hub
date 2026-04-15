@@ -1,7 +1,7 @@
 package hr.tvz.foodiehub.controllers;
 
-import hr.tvz.foodiehub.model.CreateRecipeRequest;
-import hr.tvz.foodiehub.model.RecipeDTO;
+import hr.tvz.foodiehub.model.requests.CreateRecipeRequest;
+import hr.tvz.foodiehub.model.dtos.RecipeDTO;
 import hr.tvz.foodiehub.services.interfaces.RecipeService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
