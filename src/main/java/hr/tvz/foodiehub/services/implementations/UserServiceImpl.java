@@ -5,10 +5,12 @@ import hr.tvz.foodiehub.model.dtos.UserDTO;
 import hr.tvz.foodiehub.model.requests.CreateUserRequest;
 import hr.tvz.foodiehub.repositories.UserRepository;
 import hr.tvz.foodiehub.services.interfaces.UserService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
