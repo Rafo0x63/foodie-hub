@@ -8,23 +8,11 @@ join_date DATE,
 last_active DATE
 );
 
-CREATE TABLE chefs (
-id BIGINT AUTO_INCREMENT PRIMARY KEY,
-user_id BIGINT NOT NULL UNIQUE,
-username VARCHAR(100),
-bio TEXT,
-location VARCHAR(255),
-is_verified BOOLEAN,
-FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
 CREATE TABLE recipes (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
 title VARCHAR(255) NOT NULL,
 description TEXT,
-category VARCHAR(100),
-chef_id BIGINT NOT NULL,
-FOREIGN KEY (chef_id) REFERENCES chefs(id)
+category VARCHAR(100)
 );
 
 CREATE TABLE ingredients (

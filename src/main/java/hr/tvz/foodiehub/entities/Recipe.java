@@ -18,12 +18,11 @@ public class Recipe {
     private String description;
     private String image;
     private String category;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
-
-    @ManyToOne
-    @JoinColumn(name = "chef_id")
-    private Chef chef;
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
