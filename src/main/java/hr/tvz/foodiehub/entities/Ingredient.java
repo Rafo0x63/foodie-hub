@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -17,4 +19,6 @@ public class Ingredient {
     private String amount;
     @ManyToOne
     private Recipe recipe;
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 }
