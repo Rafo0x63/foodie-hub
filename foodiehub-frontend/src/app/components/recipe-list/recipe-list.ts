@@ -61,7 +61,7 @@ export class RecipeListComponent {
     this.loading = true;
 
     this.recipeService
-      .getAll()
+      .get()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (result) => {

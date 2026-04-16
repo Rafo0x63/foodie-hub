@@ -4,7 +4,9 @@ import hr.tvz.foodiehub.entities.Recipe;
 import hr.tvz.foodiehub.model.requests.CreateRecipeRequest;
 import hr.tvz.foodiehub.model.dtos.RecipeDTO;
 import hr.tvz.foodiehub.repositories.RecipeRepository;
+import hr.tvz.foodiehub.repositories.specification.RecipeSpecification;
 import hr.tvz.foodiehub.services.interfaces.RecipeService;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -65,6 +67,19 @@ public class RecipeServiceImpl implements RecipeService {
         recipe.setCategory(createRecipeRequest.category());
 
         return mapToDTO(recipeRepository.save(recipe));
+    }
+
+    @Override
+    public List<RecipeDTO> search(String name, Integer maxTime, List<String> tags) {
+        Specification<Recipe> spec = Specification
+                .where(RecipeSpecification.hasName(name))
+                .and(RecipeSpecification.maxTime(maxTime))
+                .and(RecipeSpecification.hasTags(tags));
+
+        return recipeRepository.findAll(spec)
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
     }
 
     private RecipeDTO mapToDTO(Recipe recipe) {

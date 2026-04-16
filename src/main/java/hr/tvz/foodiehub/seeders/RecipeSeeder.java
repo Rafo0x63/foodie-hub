@@ -9,10 +9,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
+import java.util.Random;
 
 @Configuration
 public class RecipeSeeder {
-
+    private final Random random = new Random();
     @Bean
     CommandLineRunner seedRecipes(RecipeRepository recipeRepository, UserRepository userRepository) {
         return args -> {
@@ -32,6 +33,7 @@ public class RecipeSeeder {
                 recipe1.setCategory("Pasta");
                 recipe1.setDeletedAt(null);
                 recipe1.setUser(user1);
+                recipe1.setTime(10 + random.nextInt(90));
 
                 Recipe recipe2 = new Recipe();
                 recipe2.setTitle("Margherita Pizza");
@@ -40,6 +42,7 @@ public class RecipeSeeder {
                 recipe2.setCategory("Pizza");
                 recipe2.setDeletedAt(null);
                 recipe2.setUser(user2);
+                recipe2.setTime(10 + random.nextInt(90));
 
                 Recipe recipe3 = new Recipe();
                 recipe3.setTitle("Caesar Salad");
@@ -48,6 +51,7 @@ public class RecipeSeeder {
                 recipe3.setCategory("Salad");
                 recipe3.setDeletedAt(null);
                 recipe3.setUser(user3);
+                recipe3.setTime(10 + random.nextInt(90));
 
                 recipeRepository.save(recipe1);
                 recipeRepository.save(recipe2);
