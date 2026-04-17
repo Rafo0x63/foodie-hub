@@ -10,11 +10,15 @@ export class RecipeService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = 'http://localhost:8080/api/recipes';
 
-  get(name?: string, maxTime?: number, tags?: string[]): Observable<RecipeModel[]> {
+  getAll(): Observable<RecipeModel[]> {
+    return this.http.get<RecipeModel[]>(this.baseUrl);
+  }
+
+  search(title?: string, maxTime?: number, tags?: string[], category?: string): Observable<RecipeModel[]> {
     let params = new HttpParams();
 
-    if (name) {
-      params = params.set('name', name);
+    if (title) {
+      params = params.set('title', title);
     }
 
     if (maxTime !== null && maxTime !== undefined) {
@@ -27,7 +31,11 @@ export class RecipeService {
       });
     }
 
-    return this.http.get<RecipeModel[]>(this.baseUrl, {params});
+    if (category) {
+      params = params.set('category', category);
+    }
+
+    return this.http.get<RecipeModel[]>(`${this.baseUrl}/search`, {params});
   }
 
   getById(id: number): Observable<RecipeModel> {

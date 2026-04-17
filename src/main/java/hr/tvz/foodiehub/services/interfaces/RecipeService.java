@@ -10,5 +10,5 @@ public interface RecipeService {
     void deleteRecipeById(Long id);
     RecipeDTO createNewRecipe(CreateRecipeRequest createRecipeRequest);
     RecipeDTO updateRecipe(Long id, CreateRecipeRequest createRecipeRequest);
-    List<RecipeDTO> search(String name, Integer maxTime, List<String> tags);
+    List<RecipeDTO> search(String title, Integer maxTime, List<String> tags, String category);
 }

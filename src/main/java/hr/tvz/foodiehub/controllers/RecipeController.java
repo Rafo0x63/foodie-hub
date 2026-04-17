@@ -20,12 +20,18 @@ public class RecipeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RecipeDTO>> getRecipes(
-            @RequestParam(required = false) String name,
+    public ResponseEntity<List<RecipeDTO>> getAllRecipes() {
+        return ResponseEntity.ok(recipeService.getAllRecipes());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<RecipeDTO>> searchRecipes(
+            @RequestParam(required = false) String title,
             @RequestParam(required = false) Integer maxTime,
-            @RequestParam(required = false) List<String> tags
+            @RequestParam(required = false) List<String> tags,
+            @RequestParam(required = false) String category
     ) {
-        return ResponseEntity.ok(recipeService.search(name, maxTime, tags));
+        return ResponseEntity.ok(recipeService.search(title, maxTime, tags, category));
     }
 
     @GetMapping("/{id}")

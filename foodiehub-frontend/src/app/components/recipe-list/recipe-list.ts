@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, DestroyRef, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize, startWith, switchMap } from 'rxjs/operators';
 import { Router, RouterLink } from '@angular/router';
 import { RecipeModel } from '../../models/recipe.model';
 import { RecipeService } from '../../core/services/recipe.service';
@@ -31,9 +32,9 @@ export class RecipeListComponent {
 
   readonly categories = [
     { label: 'Sve', value: null },
-    { label: 'Tjestenina', value: 'Pasta' },
-    { label: 'Salata', value: 'Salad' },
-    { label: 'Deserti', value: 'Deserts' },
+    { label: 'Tjestenina', value: 'Tjestenina' },
+    { label: 'Salata', value: 'Salata' },
+    { label: 'Deserti', value: 'Deserti' },
     { label: 'Pizza', value: 'Pizza' },
     { label: 'Azijska kuhinja', value: 'Azijska kuhinja' },
   ];
@@ -53,21 +54,44 @@ export class RecipeListComponent {
   });
 
   constructor() {
-    this.handleFilterChanges();
-    this.loadRecipes();
+    this.setupSearch();
+    this.setupSortFilter();
   }
 
-  loadRecipes(): void {
-    this.loading = true;
+  private setupSearch(): void {
+    const title$ = this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      startWith(null as string | null),
+    );
 
-    this.recipeService
-      .get()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+    const category$ = this.filterForm.get('category')!.valueChanges.pipe(
+      startWith(null as string | null),
+    );
+
+    combineLatest([title$, category$])
+      .pipe(
+        switchMap(([titleValue, categoryValue]) => {
+          const title = titleValue?.trim() || undefined;
+          const category = categoryValue || undefined;
+          this.loading = true;
+
+          return (title || category
+            ? this.recipeService.search(title, undefined, undefined, category)
+            : this.recipeService.getAll()
+          ).pipe(
+            finalize(() => {
+              this.loading = false;
+              this.cdr.detectChanges();
+            }),
+          );
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe({
         next: (result) => {
           this.recipes = result;
-          this.applyFilters();
-          this.loading = false;
+          this.applySort();
           this.cdr.detectChanges();
         },
         error: (err) => {
@@ -79,16 +103,10 @@ export class RecipeListComponent {
       });
   }
 
-  private handleFilterChanges(): void {
-    this.filterForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.applyFilters();
-    });
-
-    this.searchControl.valueChanges
-      .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        this.applyFilters();
-      });
+  private setupSortFilter(): void {
+    this.filterForm.get('sortBy')!.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((sortBy) => this.applySort(sortBy ?? 'titleAsc'));
   }
 
   toggleFilters(): void {
@@ -96,17 +114,11 @@ export class RecipeListComponent {
   }
 
   clearFilters(): void {
-    this.searchControl.setValue(null, { emitEvent: false });
-
-    this.filterForm.reset(
-      {
-        category: null,
-        sortBy: 'titleAsc',
-      },
-      { emitEvent: false },
-    );
-
-    this.applyFilters();
+    this.searchControl.setValue(null);
+    this.filterForm.reset({
+      category: null,
+      sortBy: 'titleAsc',
+    });
   }
 
   editRecipe(id: number): void {
@@ -134,7 +146,7 @@ export class RecipeListComponent {
       .subscribe({
         next: () => {
           this.recipes = this.recipes.filter((r) => r.id !== recipe.id);
-          this.applyFilters();
+          this.applySort();
         },
         error: (err) => {
           console.error('Greška pri brisanju recepta', err);
@@ -146,24 +158,11 @@ export class RecipeListComponent {
     this.router.navigate(['/add-recipe']);
   }
 
-  private applyFilters(): void {
-    const search = this.searchControl.value?.trim().toLowerCase() ?? '';
-    const category = this.filterForm.value.category;
-    const sortBy = this.filterForm.value.sortBy ?? 'titleAsc';
+  private applySort(sortBy?: string): void {
+    const sort = sortBy ?? this.filterForm.value.sortBy ?? 'titleAsc';
 
-    let filtered = this.recipes.filter((recipe) => {
-      const matchesSearch =
-        search.length === 0 ||
-        recipe.title.toLowerCase().includes(search) ||
-        recipe.description.toLowerCase().includes(search);
-
-      const matchesCategory = !category || recipe.category === category;
-
-      return matchesSearch && matchesCategory;
-    });
-
-    filtered = [...filtered].sort((a, b) => {
-      switch (sortBy) {
+    this.filteredRecipes = [...this.recipes].sort((a, b) => {
+      switch (sort) {
         case 'titleAsc':
           return a.title.localeCompare(b.title);
         case 'titleDesc':
@@ -176,7 +175,5 @@ export class RecipeListComponent {
           return 0;
       }
     });
-
-    this.filteredRecipes = filtered;
   }
 }

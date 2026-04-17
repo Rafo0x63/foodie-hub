@@ -5,12 +5,14 @@ import hr.tvz.foodiehub.repositories.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 import java.util.List;
 
 @Configuration
 public class RoleSeeder {
     @Bean
+    @Order(1)
     CommandLineRunner seedRoles(RoleRepository roleRepository){
         return args -> {
             if(roleRepository.findAll().isEmpty()){

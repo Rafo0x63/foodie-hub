@@ -10,6 +10,7 @@ import hr.tvz.foodiehub.repositories.TagRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Random;
 public class RecipeTagSeeder {
     private final Random random = new Random();
     @Bean
+    @Order(5)
     CommandLineRunner seedRecipeTags(RecipeRepository recipeRepository, TagRepository tagRepository, RecipeTagRepository recipeTagRepository) {
         return args -> {
             if(recipeTagRepository.findAll().isEmpty()) {

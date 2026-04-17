@@ -9,6 +9,7 @@ import hr.tvz.foodiehub.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @Configuration
 public class CommentSeeder {
     @Bean
+    @Order(6)
     CommandLineRunner seedComments(CommentRepository commentRepository, RecipeRepository recipeRepository, UserRepository userRepository){
         return args -> {
             if(commentRepository.findByDeletedAtIsNull().isEmpty()){

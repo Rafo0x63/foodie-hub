@@ -7,10 +7,20 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.List;
 
 public class RecipeSpecification {
-    public static Specification<Recipe> hasName(String name) {
+    public static Specification<Recipe> notDeleted() {
+        return (root, query, cb) -> cb.isNull(root.get("deletedAt"));
+    }
+
+    public static Specification<Recipe> hasCategory(String category) {
         return (root, query, cb) ->
-                name == null ? null :
-                        cb.like(cb.lower(root.get("name")), "%" + name.toLowerCase() + "%");
+                category == null ? null :
+                        cb.equal(root.get("category"), category);
+    }
+
+    public static Specification<Recipe> hasTitle(String title) {
+        return (root, query, cb) ->
+                title == null ? null :
+                        cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%");
     }
 
     public static Specification<Recipe> maxTime(Integer maxTime) {

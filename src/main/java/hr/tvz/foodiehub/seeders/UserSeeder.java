@@ -7,12 +7,14 @@ import hr.tvz.foodiehub.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 
 import java.util.List;
 
 @Configuration
 public class UserSeeder {
     @Bean
+    @Order(3)
     CommandLineRunner seedUsers(UserRepository userRepository, RoleRepository roleRepository){
         return args -> {
             if (userRepository.findByDeletedAtIsNull().isEmpty()){

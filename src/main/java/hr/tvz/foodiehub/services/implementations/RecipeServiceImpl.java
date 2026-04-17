@@ -70,11 +70,13 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<RecipeDTO> search(String name, Integer maxTime, List<String> tags) {
+    public List<RecipeDTO> search(String title, Integer maxTime, List<String> tags, String category) {
         Specification<Recipe> spec = Specification
-                .where(RecipeSpecification.hasName(name))
+                .where(RecipeSpecification.notDeleted())
+                .and(RecipeSpecification.hasTitle(title))
                 .and(RecipeSpecification.maxTime(maxTime))
-                .and(RecipeSpecification.hasTags(tags));
+                .and(RecipeSpecification.hasTags(tags))
+                .and(RecipeSpecification.hasCategory(category));
 
         return recipeRepository.findAll(spec)
                 .stream()
