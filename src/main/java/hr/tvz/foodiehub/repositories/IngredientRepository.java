@@ -8,7 +8,5 @@ import java.util.Optional;
 
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     List<Ingredient> findByRecipe_IdAndDeletedAtIsNull(Long id);
-    List<Ingredient> findByDeletedAtIsNull();
-    Optional<Ingredient> findByIdAndDeletedAtIsNull(Long id);
-
+    Optional<Ingredient> findByRecipe_IdAndIdAndDeletedAtIsNull(Long recipeId, Long ingredientId);
 }

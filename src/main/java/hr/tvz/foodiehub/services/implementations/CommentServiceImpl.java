@@ -39,36 +39,47 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public CommentDTO getCommentById(Long id) {
-        Comment comment = commentRepository.findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new RuntimeException("Comment not found with id: " + id));
+    public List<CommentDTO> getAllRecipeComments(Long recipeId) {
+        return commentRepository.findByRecipe_IdAndDeletedAtIsNullOrderByCreatedAtDesc(recipeId)
+                .stream()
+                .map(this::mapToDTO)
+                .toList();
+    }
+
+    @Override
+    public CommentDTO getCommentById(Long recipeId, Long commentId) {
+        Comment comment = commentRepository.findByIdAndRecipe_IdAndDeletedAtIsNull(commentId, recipeId)
+                .orElseThrow(() -> new RuntimeException(
+                        "Comment not found with id: " + commentId + " for recipe id: " + recipeId
+                ));
 
         return mapToDTO(comment);
     }
 
     @Override
-    public void deleteCommentById(Long id) {
-       Comment comment = commentRepository.findByIdAndDeletedAtIsNull(id)
-               .orElseThrow(() -> new RuntimeException("Comment not found with id: " + id));
+    public void deleteCommentById(Long recipeId, Long commentId) {
+        Comment comment = commentRepository.findByIdAndRecipe_IdAndDeletedAtIsNull(commentId, recipeId)
+                .orElseThrow(() -> new RuntimeException(
+                        "Comment not found with id: " + commentId + " for recipe id: " + recipeId
+                ));
 
-       comment.setDeletedAt(LocalDateTime.now());
-       commentRepository.save(comment);
+        comment.setDeletedAt(LocalDateTime.now());
+        commentRepository.save(comment);
     }
 
     @Override
-    public CommentDTO createNewComment(CreateCommentRequest createCommentRequest) {
-        Comment newComment = new Comment();
+    public CommentDTO createNewComment(Long recipeId, CreateCommentRequest createCommentRequest) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new RuntimeException("Recipe not found with id: " + recipeId));
 
+        Comment newComment = new Comment();
         newComment.setText(createCommentRequest.text());
         newComment.setRating(createCommentRequest.rating());
         newComment.setCreatedAt(LocalDateTime.now());
         newComment.setDeletedAt(null);
-
-        Recipe recipe = recipeRepository.findById(createCommentRequest.recipeId())
-                        .orElseThrow(() -> new RuntimeException("Recipe not found with id: " + createCommentRequest.recipeId()));
         newComment.setRecipe(recipe);
 
-        //promjenit nakon login i ne znam pšostoji li user sa idem 1 i necu gledat
+        //dok login nije gotov
         User user = userRepository.findById(1L)
                 .orElseThrow(() -> new RuntimeException("User not found with id: 1"));
         newComment.setUser(user);
@@ -79,9 +90,9 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public CommentDTO updateComment(Long id, CreateCommentRequest createCommentRequest) {
-        Comment comment = commentRepository.findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new RuntimeException("Comment not found with id: " + id));
+    public CommentDTO updateComment(Long recipeId, Long commentId, CreateCommentRequest createCommentRequest) {
+        Comment comment = commentRepository.findByIdAndRecipe_IdAndDeletedAtIsNull(commentId, recipeId)
+                .orElseThrow(() -> new RuntimeException( "Comment not found with id: " + commentId + " for recipe id: " + recipeId));
 
         comment.setText(createCommentRequest.text());
         comment.setRating(createCommentRequest.rating());
@@ -93,7 +104,7 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public List<CommentDTO> getAllUserComments(Long userId) {
-        return commentRepository.findByUser_IdOrderByCreatedAtDesc(userId)
+        return commentRepository.findByUser_IdAndDeletedAtIsNullOrderByCreatedAtDesc(userId)
                 .stream()
                 .map(this::mapToDTO)
                 .toList();

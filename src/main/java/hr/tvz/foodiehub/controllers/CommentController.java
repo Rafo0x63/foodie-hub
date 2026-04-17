@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping("/api/recipes/{recipeId}/comments")
 public class CommentController {
 
     private final CommentService commentService;
@@ -21,48 +21,42 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CommentDTO>> getAllComments() {
-        List<CommentDTO> comments = commentService.getAllComments();
-
-        return ResponseEntity.ok(comments);
+    public ResponseEntity<List<CommentDTO>> getAllRecipeComments(@PathVariable Long recipeId) {
+        return ResponseEntity.ok(commentService.getAllRecipeComments(recipeId));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CommentDTO> getCommentById(@PathVariable Long id) {
-        CommentDTO comment = commentService.getCommentById(id);
+    @GetMapping("/{commentId}")
+    public ResponseEntity<CommentDTO> getCommentById(@PathVariable Long recipeId,
+                                                     @PathVariable Long commentId)
+    {
+        return ResponseEntity.ok(commentService.getCommentById(recipeId, commentId));
 
-        return ResponseEntity.ok(comment);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<CommentDTO>> getAllUserComments(@PathVariable Long userId) {
-        List<CommentDTO> comments = commentService.getAllUserComments(userId);
-
-        return ResponseEntity.ok(comments);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCommentById(@PathVariable Long id) {
-        commentService.deleteCommentById(id);
-
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> deleteCommentById(@PathVariable Long recipeId,
+                                                  @PathVariable Long commentId) {
+        commentService.deleteCommentById(recipeId, commentId);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{recipeId}")
+    @PostMapping
     public ResponseEntity<CommentDTO> createNewComment(
+            @PathVariable Long recipeId,
             @Valid @RequestBody CreateCommentRequest createCommentRequest
     ) {
-        CommentDTO createdComment = commentService.createNewComment(createCommentRequest);
-        URI location = URI.create("/comments/" + createdComment.getId());
+        CommentDTO createdComment = commentService.createNewComment(recipeId, createCommentRequest);
+        URI location = URI.create("/api/recipes/" + recipeId + "/comments/" + createdComment.getId());
 
         return ResponseEntity.created(location).body(createdComment);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{commentId}")
     public ResponseEntity<CommentDTO> updateComment(
-            @PathVariable Long id,
+            @PathVariable Long recipeId,
+            @PathVariable Long commentId,
             @Valid @RequestBody CreateCommentRequest createCommentRequest
     ) {
-        return ResponseEntity.ok(commentService.updateComment(id, createCommentRequest));
+        return ResponseEntity.ok(commentService.updateComment(recipeId, commentId, createCommentRequest));
     }
 }

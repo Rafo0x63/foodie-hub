@@ -1,9 +1,7 @@
 package hr.tvz.foodiehub.services.implementations;
 
-import hr.tvz.foodiehub.entities.Comment;
 import hr.tvz.foodiehub.entities.Ingredient;
 import hr.tvz.foodiehub.entities.Recipe;
-import hr.tvz.foodiehub.model.dtos.CommentDTO;
 import hr.tvz.foodiehub.model.dtos.IngredientDTO;
 import hr.tvz.foodiehub.model.requests.CreateIngredientRequest;
 import hr.tvz.foodiehub.repositories.IngredientRepository;
@@ -26,25 +24,9 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public List<IngredientDTO> getAllIngredients() {
-        return ingredientRepository.findByDeletedAtIsNull()
-                .stream()
-                .map(this::mapToDTO)
-                .toList();
-    }
-
-    @Override
-    public IngredientDTO getIngredientById(Long id) {
-        Ingredient ingredient = ingredientRepository.findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new RuntimeException("Ingredient with not found with id: " + id));
-
-        return mapToDTO(ingredient);
-    }
-
-    @Override
-    public void deleteIngredientById(Long id) {
-        Ingredient ingredient = ingredientRepository.findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new RuntimeException("Ingredient with not found with id: " + id));
+    public void deleteIngredientById(Long recipeId, Long ingredientId) {
+        Ingredient ingredient = ingredientRepository.findByRecipe_IdAndIdAndDeletedAtIsNull(recipeId, ingredientId)
+                .orElseThrow(() -> new RuntimeException("Ingredient in recipe not found with id: " + ingredientId));
 
         ingredient.setDeletedAt(LocalDateTime.now());
         ingredientRepository.save(ingredient);
@@ -69,9 +51,9 @@ public class IngredientServiceImpl implements IngredientService {
 
 
     @Override
-    public IngredientDTO updateIngredient(Long id, CreateIngredientRequest createIngredientRequest) {
-        Ingredient ingredient = ingredientRepository.findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new RuntimeException("Ingredient not found with id: " + id));
+    public IngredientDTO updateIngredient(Long recipeId, Long ingredientId, CreateIngredientRequest createIngredientRequest) {
+        Ingredient ingredient = ingredientRepository.findByRecipe_IdAndIdAndDeletedAtIsNull(recipeId, ingredientId)
+                .orElseThrow(() -> new RuntimeException("Ingredient not found with id: " + ingredientId));
 
         ingredient.setName(createIngredientRequest.name());
         ingredient.setAmount(createIngredientRequest.amount());

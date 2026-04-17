@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/ingredients")
+@RequestMapping("/api/recipes/{recipeId}/ingredients")
 public class IngredientController {
 
     private final IngredientService ingredientService;
@@ -21,29 +21,14 @@ public class IngredientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<IngredientDTO>> getAllIngredients() {
-        List<IngredientDTO> ingredients = ingredientService.getAllIngredients();
-
-        return ResponseEntity.ok(ingredients);
+    public ResponseEntity<List<IngredientDTO>> getAllIngredients(@PathVariable Long recipeId) {
+        return ResponseEntity.ok(ingredientService.getAllRecipeIngredients(recipeId));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<IngredientDTO> getIngredientById(@PathVariable Long id) {
-        IngredientDTO ingredient = ingredientService.getIngredientById(id);
-
-        return ResponseEntity.ok(ingredient);
-    }
-
-    @GetMapping("/recipe/{recipeId}")
-    public ResponseEntity<List<IngredientDTO>> getAllRecipeIngredients(@PathVariable Long recipeId) {
-        List<IngredientDTO> ingredients = ingredientService.getAllRecipeIngredients(recipeId);
-
-        return ResponseEntity.ok(ingredients);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteIngredientById(@PathVariable Long id) {
-        ingredientService.deleteIngredientById(id);
+    @DeleteMapping("/{ingredientId}")
+    public ResponseEntity<Void> deleteIngredientById(@PathVariable Long recipeId,
+                                                     @PathVariable Long ingredientId) {
+        ingredientService.deleteIngredientById(recipeId, ingredientId);
 
         return ResponseEntity.noContent().build();
     }
@@ -61,8 +46,9 @@ public class IngredientController {
     @PutMapping("/{id}")
     public ResponseEntity<IngredientDTO> updateIngredient(
             @PathVariable Long id,
+            @PathVariable Long recipeId,
             @Valid @RequestBody CreateIngredientRequest createIngredientRequest
     ) {
-        return ResponseEntity.ok(ingredientService.updateIngredient(id, createIngredientRequest));
+        return ResponseEntity.ok(ingredientService.updateIngredient(id, recipeId, createIngredientRequest));
     }
 }
