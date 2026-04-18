@@ -3,12 +3,18 @@ package hr.tvz.foodiehub.model.requests;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 public record CreateRecipeRequest(
-        @NotBlank @Size( min = 3, max = 50)
         String title,
-        @NotBlank @Size( min = 10, max = 1000)
         String description,
-        //String image,
-        @NotBlank
-        String category
+        String category,
+        String imageUrl,
+        Integer prepTime,
+        Integer cookTime,
+        Integer servings,
+        List<String>ingredients,
+        List<String> steps
+
+
 ){}
