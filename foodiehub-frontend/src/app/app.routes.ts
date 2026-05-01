@@ -5,6 +5,7 @@ import { EditRecipe } from './components/edit-recipe/edit-recipe';
 import { AddRecipe } from './components/add-recipe/add-recipe';
 import { Homepage } from './components/homepage/homepage';
 import { Login } from './components/login/login';
+import { Register } from './components/register/register';
 import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'recipe/:id', component: RecipeDetailComponent },
   { path: 'add-recipe', component: AddRecipe, canActivate: [authGuard] },
   { path: 'edit-recipe/:id', component: EditRecipe, canActivate: [authGuard] },
-  { path: 'login', component: Login }
+  { path: 'login', component: Login },
+  { path: 'register', component: Register }
 ];

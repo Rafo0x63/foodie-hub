@@ -1,0 +1,132 @@
+<div class="min-h-screen bg-[linear-gradient(135deg,#FFF7ED_0%,#FFFFFF_50%,#FFF7ED_100%)] flex flex-col items-center justify-center px-4 py-10">
+  <a [routerLink]="['/']" class="flex items-center gap-3 mb-10">
+    <i class="pi pi-book text-[36px] text-orange-500"></i>
+    <h1 class="text-4xl font-bold text-slate-900">FoodieHub</h1>
+  </a>
+
+  <div class="w-full max-w-135 bg-white rounded-3xl shadow-2xl px-10 py-10">
+    <div class="text-center mb-8">
+      <h2 class="text-4xl font-bold text-slate-900 mb-3">Kreiraj račun</h2>
+      <p class="text-xl text-slate-500">Pridruži se FoodieHub zajednici</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <div>
+        <label for="name" class="block text-slate-900 font-semibold mb-3">Ime i prezime</label>
+        <p-iconField class="w-full">
+          <p-inputIcon class="pi pi-user text-slate-400" />
+          <input
+            id="name"
+            type="text"
+            pInputText
+            formControlName="name"
+            placeholder="Marko Marković"
+            class="w-full h-14 rounded-xl border border-slate-300 pl-12 pr-4 text-lg text-slate-700 placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
+          />
+        </p-iconField>
+        @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+          <p class="text-red-500 text-sm mt-1">Ime i prezime je obavezno.</p>
+        }
+      </div>
+
+      <div>
+        <label for="email" class="block text-slate-900 font-semibold mb-3">Email adresa</label>
+        <p-iconField class="w-full">
+          <p-inputIcon class="pi pi-envelope text-slate-400" />
+          <input
+            id="email"
+            type="email"
+            pInputText
+            formControlName="email"
+            placeholder="vas.email@primjer.com"
+            class="w-full h-14 rounded-xl border border-slate-300 pl-12 pr-4 text-lg text-slate-700 placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
+          />
+        </p-iconField>
+        @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+          <p class="text-red-500 text-sm mt-1">Unesite ispravnu email adresu.</p>
+        }
+      </div>
+
+      <div>
+        <label for="password" class="block text-slate-900 font-semibold mb-3">Lozinka</label>
+        <p-iconField class="w-full">
+          <p-inputIcon class="pi pi-lock text-slate-400" />
+          <input
+            id="password"
+            #passwordInput
+            type="password"
+            pInputText
+            formControlName="password"
+            placeholder="••••••••"
+            class="w-full h-14 rounded-xl border border-slate-300 px-12 text-lg text-slate-700 placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
+          />
+          <p-inputIcon
+            class="text-slate-400 cursor-pointer"
+            [class.pi-eye]="passwordInput.type === 'password'"
+            [class.pi-eye-slash]="passwordInput.type !== 'password'"
+            (click)="passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password'"
+          ></p-inputIcon>
+        </p-iconField>
+        @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+          <p class="text-red-500 text-sm mt-1">Lozinka mora imati najmanje 8 znakova.</p>
+        }
+        <p class="text-xs text-slate-500 mt-1">Minimalno 8 znakova</p>
+      </div>
+
+      <div>
+        <label for="confirmPassword" class="block text-slate-900 font-semibold mb-3">Potvrdi lozinku</label>
+        <p-iconField class="w-full">
+          <p-inputIcon class="pi pi-lock text-slate-400" />
+          <input
+            id="confirmPassword"
+            #confirmPasswordInput
+            type="password"
+            pInputText
+            formControlName="confirmPassword"
+            placeholder="••••••••"
+            class="w-full h-14 rounded-xl border border-slate-300 px-12 text-lg text-slate-700 placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
+          />
+          <p-inputIcon
+            class="text-slate-400 cursor-pointer"
+            [class.pi-eye]="confirmPasswordInput.type === 'password'"
+            [class.pi-eye-slash]="confirmPasswordInput.type !== 'password'"
+            (click)="confirmPasswordInput.type = confirmPasswordInput.type === 'password' ? 'text' : 'password'"
+          ></p-inputIcon>
+        </p-iconField>
+        @if (registerForm.errors?.['passwordsMismatch'] && registerForm.get('confirmPassword')?.touched) {
+          <p class="text-red-500 text-sm mt-1">Lozinke se ne poklapaju.</p>
+        }
+      </div>
+
+      <div class="flex items-start gap-3">
+        <p-checkbox formControlName="agreeToTerms" inputId="agreeToTerms" binary="true" />
+        <label for="agreeToTerms" class="text-slate-600 text-base cursor-pointer">
+          Slažem se s
+          <span class="text-orange-500 hover:text-orange-600 cursor-pointer">uvjetima korištenja</span>
+          i
+          <span class="text-orange-500 hover:text-orange-600 cursor-pointer">politikom privatnosti</span>
+        </label>
+      </div>
+      @if (registerForm.get('agreeToTerms')?.invalid && registerForm.get('agreeToTerms')?.touched) {
+        <p class="text-red-500 text-sm -mt-4">Morate prihvatiti uvjete korištenja.</p>
+      }
+
+      @if (errorMessage) {
+        <p class="text-red-500 text-sm text-center">{{ errorMessage }}</p>
+      }
+
+      <p-button
+        type="submit"
+        label="Registruj se"
+        styleClass="!w-full !h-14 !rounded-xl !bg-orange-500 !border-orange-500 hover:!bg-orange-600 hover:!border-orange-600 !text-white !text-lg !font-bold !shadow-lg !shadow-orange-200"
+      />
+
+      <div class="border-t border-slate-100 pt-6 text-center text-lg text-slate-500">
+        Već imate račun?
+        <a routerLink="/login" class="font-bold text-orange-500 hover:text-orange-600">Prijavite se</a>
+      </div>
+    </form>
+  </div>
+
+  <a routerLink="/" class="mt-8 text-lg text-slate-500 hover:text-orange-500">← Nazad na početnu</a>
+</div>
