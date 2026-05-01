@@ -40,6 +40,17 @@ public class JwtService {
         return claims.get("roles", List.class);
     }
 
+    public String generateToken(String username, List<String> roles) {
+        return Jwts.builder()
+                .subject(username)
+                .claim("roles", roles)
+                .claim("type", "access")
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 sati
+                .signWith(getSigningKey())
+                .compact();
+    }
+
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())

@@ -48,7 +48,10 @@ public class SecurityConfig {
                                 "/api/auth/logout"
                         ).permitAll()
 
-                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers(
+                                "/api/**",
+                                "/api/auth/currentUser"
+                        ).authenticated()
                         .anyRequest().authenticated()
                 )
 

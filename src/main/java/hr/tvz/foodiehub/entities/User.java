@@ -18,6 +18,7 @@ public class User {
     private Long id;
     private String name;
     private String email;
+    private String password;
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
     @ManyToMany

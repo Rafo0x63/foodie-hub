@@ -4,12 +4,15 @@ import { RecipeDetailComponent } from './components/recipe-detail/recipe-detail'
 import { EditRecipe } from './components/edit-recipe/edit-recipe';
 import { AddRecipe } from './components/add-recipe/add-recipe';
 import { Homepage } from './components/homepage/homepage';
+import { Login } from './components/login/login';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'homepage', pathMatch: 'full' },
   { path: 'homepage', component: Homepage },
   { path: 'recipe-list', component: RecipeListComponent },
   { path: 'recipe/:id', component: RecipeDetailComponent },
-  { path: 'add-recipe', component: AddRecipe },
-  { path: 'edit-recipe/:id', component: EditRecipe },
+  { path: 'add-recipe', component: AddRecipe, canActivate: [authGuard] },
+  { path: 'edit-recipe/:id', component: EditRecipe, canActivate: [authGuard] },
+  { path: 'login', component: Login }
 ];
