@@ -15,16 +15,12 @@ public class RoleSeeder {
     @Order(1)
     CommandLineRunner seedRoles(RoleRepository roleRepository){
         return args -> {
-            if(roleRepository.findAll().isEmpty()){
-                Role role1 = new Role();
-                Role role2 = new Role();
-                Role role3 = new Role();
-
-                role1.setRoleName("ROLE_CHEF");
-                role2.setRoleName("ROLE_ADMIN");
-                role3.setRoleName("ROLE_SUPER_ADMIN");
-
-                roleRepository.saveAll(List.of(role1, role2, role3));
+            for (String roleName : List.of("ROLE_USER", "ROLE_CHEF", "ROLE_ADMIN", "ROLE_SUPER_ADMIN")) {
+                if (roleRepository.findByRoleName(roleName).isEmpty()) {
+                    Role role = new Role();
+                    role.setRoleName(roleName);
+                    roleRepository.save(role);
+                }
             }
         };
     }

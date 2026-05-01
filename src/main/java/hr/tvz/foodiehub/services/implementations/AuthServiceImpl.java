@@ -4,6 +4,8 @@ import hr.tvz.foodiehub.entities.Role;
 import hr.tvz.foodiehub.entities.User;
 import hr.tvz.foodiehub.model.dtos.UserDTO;
 import hr.tvz.foodiehub.model.requests.LoginRequest;
+import hr.tvz.foodiehub.model.requests.RegisterRequest;
+import hr.tvz.foodiehub.repositories.RoleRepository;
 import hr.tvz.foodiehub.repositories.UserRepository;
 import hr.tvz.foodiehub.security.CookieService;
 import hr.tvz.foodiehub.security.JwtService;
@@ -22,6 +24,7 @@ import java.util.Optional;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final CookieService cookieService;
@@ -53,6 +56,29 @@ public class AuthServiceImpl implements AuthService {
         }
         return userRepository.findByEmailAndDeletedAtIsNull(email)
                 .map(this::mapToDTO);
+    }
+
+    @Override
+    public UserDTO register(RegisterRequest registerRequest) {
+        if (userRepository.findByEmailAndDeletedAtIsNull(registerRequest.email()).isPresent()) {
+            throw new RuntimeException("Korisnik s tim emailom već postoji.");
+        }
+
+        Role defaultRole = roleRepository.findByRoleName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Zadana uloga nije pronađena."));
+
+        User user = new User();
+        user.setName(registerRequest.name());
+        user.setEmail(registerRequest.email());
+        user.setPassword(passwordEncoder.encode(registerRequest.password()));
+        user.setRoles(List.of(defaultRole));
+
+        return mapToDTO(userRepository.save(user));
+    }
+
+    @Override
+    public void logout(HttpServletResponse response) {
+        cookieService.clearAccessToken(response);
     }
 
     private UserDTO mapToDTO(User user) {
