@@ -8,6 +8,7 @@ import { Router, RouterLink } from '@angular/router';
 import { RecipeModel } from '../../models/recipe.model';
 import { RecipeService } from '../../core/services/recipe.service';
 import { ButtonModule } from 'primeng/button';
+import {AuthService} from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -22,7 +23,10 @@ export class RecipeListComponent {
   private readonly recipeService = inject(RecipeService);
   private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly authService = inject(AuthService)
 
+  currentUserId: number | null = null;
+  isAdmin = false;
   recipes: RecipeModel[] = [];
   filteredRecipes: RecipeModel[] = [];
   loading = false;
@@ -54,6 +58,10 @@ export class RecipeListComponent {
   });
 
   constructor() {
+    const user = this.authService.getCurrentUser();
+    this.currentUserId = user?.id || null;
+    this.isAdmin = this.authService.isAdmin();
+
     this.setupSearch();
     this.setupSortFilter();
   }
@@ -175,5 +183,11 @@ export class RecipeListComponent {
           return 0;
       }
     });
+  }
+
+  canModify(recipe: RecipeModel): boolean {
+    if (this.isAdmin) return true;
+
+    return recipe.user?.id === this.currentUserId;
   }
 }

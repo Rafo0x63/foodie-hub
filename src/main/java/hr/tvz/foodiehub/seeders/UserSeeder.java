@@ -56,7 +56,14 @@ public class UserSeeder {
                 user4.setDeletedAt(null);
                 user4.setRoles(List.of(superAdminRole, chefRole, adminRole));
 
-                userRepository.saveAll(List.of(user1, user2, user3, user4));
+                User user5 = new User();
+                user5.setName("Josip Miličević");
+                user5.setEmail("josip@gmail.com");
+                user5.setPassword(defaultPassword);
+                user5.setDeletedAt(null);
+                user5.setRoles(List.of(chefRole));
+
+                userRepository.saveAll(List.of(user1, user2, user3, user4, user5));
 
             }
         };

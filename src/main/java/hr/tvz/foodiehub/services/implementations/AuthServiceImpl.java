@@ -82,6 +82,11 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private UserDTO mapToDTO(User user) {
-        return new UserDTO(user.getId(), user.getName(), user.getEmail());
+        return new UserDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getRoles().get(0).getRoleName()
+        );
     }
 }

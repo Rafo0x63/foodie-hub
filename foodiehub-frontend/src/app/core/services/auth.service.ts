@@ -29,7 +29,10 @@ export class AuthService {
 
   login(loginData: LoginData): Observable<UserDTO> {
     return this.http.post<UserDTO>(`${this.authUrl}/login`, loginData).pipe(
-      tap(user => this.currentUser.set(user))
+      tap(user => {
+        this.currentUser.set(user);
+        localStorage.setItem('user', JSON.stringify(user));
+      })
     );
   }
 
@@ -45,5 +48,34 @@ export class AuthService {
         return of(void 0);
       })
     );
+  }
+
+  loadUserFromStorage() {
+    const user = localStorage.getItem('user');
+    if (user) {
+      this.currentUser.set(JSON.parse(user));
+    }
+  }
+
+  getCurrentUser(): any {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
+
+  getUserRole(): string | null {
+    return this.getCurrentUser()?.role || null;
+  }
+
+  getUserId(): number | null {
+    return this.getCurrentUser()?.id || null;
+  }
+
+  hasRole(role: string): boolean {
+    return this.getUserRole() === role;
+  }
+
+  isAdmin(): boolean {
+    const role = this.getUserRole();
+    return role === 'ROLE_ADMIN' || role ==='ROLE_SUPER_ADMIN';
   }
 }

@@ -38,6 +38,11 @@ export interface RecipeModel {
   title: string;
   description: string;
   category: string;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  }
 }
 
 export interface CreateRecipeRequest {

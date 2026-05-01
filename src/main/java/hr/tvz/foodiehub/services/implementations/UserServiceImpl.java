@@ -70,7 +70,8 @@ public class UserServiceImpl implements UserService {
         return new UserDTO(
                 user.getId(),
                 user.getName(),
-                user.getEmail()
+                user.getEmail(),
+                user.getRoles().get(0).getRoleName()
         );
     }
 }

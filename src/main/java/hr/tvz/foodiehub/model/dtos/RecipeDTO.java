@@ -12,4 +12,5 @@ public class RecipeDTO {
     private String title;
     private String description;
     private String category;
+    private UserDTO user;
 }

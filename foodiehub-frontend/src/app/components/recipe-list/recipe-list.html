@@ -141,24 +141,26 @@
               </div>
             </a>
 
-            <div class="flex gap-3 px-4 pb-4">
-              <p-button
-                label="Uredi"
-                icon="pi pi-pencil"
-                styleClass="!rounded-xl !px-4 !py-2 !text-sm hover:!bg-orange-50 hover:!text-orange-500"
-                (onClick)="editRecipe(recipe.id)"
-              ></p-button>
+            @if (canModify(recipe)) {
+              <div class="flex gap-3 px-4 pb-4">
+                <p-button
+                  label="Uredi"
+                  icon="pi pi-pencil"
+                  styleClass="!rounded-xl !px-4 !py-2 !text-sm hover:!bg-orange-50 hover:!text-orange-500"
+                  (onClick)="editRecipe(recipe.id)"
+                ></p-button>
 
-              <p-button
-                label="Obriši"
-                icon="pi pi-trash"
-                severity="danger"
-                [loading]="deletingRecipeId === recipe.id"
-                [disabled]="deletingRecipeId === recipe.id"
-                styleClass="!rounded-xl !px-4 !py-2 !text-sm"
-                (onClick)="deleteRecipe(recipe)"
-              ></p-button>
-            </div>
+                <p-button
+                  label="Obriši"
+                  icon="pi pi-trash"
+                  severity="danger"
+                  [loading]="deletingRecipeId === recipe.id"
+                  [disabled]="deletingRecipeId === recipe.id"
+                  styleClass="!rounded-xl !px-4 !py-2 !text-sm"
+                  (onClick)="deleteRecipe(recipe)"
+                ></p-button>
+              </div>
+            }
 
           </div>
         }

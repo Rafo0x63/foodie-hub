@@ -10,6 +10,9 @@
       <a href="#" class="hover:text-orange-500 transition">Kuhari</a>
       <a href="#" class="hover:text-orange-500 transition">Kategorije</a>
       <a href="#" class="hover:text-orange-500 transition">Planer</a>
+      @if (authService.isAdmin()) {
+      <a [routerLink]="['/admin']">Admin Panel</a>
+      }
     </div>
 
     <div class="flex items-center gap-3">
