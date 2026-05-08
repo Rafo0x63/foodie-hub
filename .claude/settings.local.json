@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\anton\\\\OneDrive\\\\Desktop\\\\foodie-hub\" -Force)",
+      "Bash(Select-Object Name, FullName)"
+    ]
+  }
+}
