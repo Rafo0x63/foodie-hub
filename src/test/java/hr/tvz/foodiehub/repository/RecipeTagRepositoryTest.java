@@ -9,33 +9,34 @@ import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabas
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class RecipeTagRepositoryTest {
+class RecipeTagRepositoryTest {
 
     @Autowired
     private RecipeTagRepository recipeTagRepository;
 
     @Test
     void shouldFindRecipesByTagId() {
-        Long tagId = 1L;
+        RecipeTag existingRecipeTag = getExistingRecipeTag();
 
-        List<RecipeTag> list =
-                recipeTagRepository.findByTagId(tagId);
+        Long tagId = existingRecipeTag.getTag().getId();
+
+        List<RecipeTag> list = recipeTagRepository.findByTagId(tagId);
 
         assertNotNull(list);
         assertFalse(list.isEmpty());
     }
 
     @Test
-    void shouldFindEnrollmentsByCourseId() {
-        Long recipeId = 1L;
+    void shouldFindRecipeTagsByRecipeId() {
+        RecipeTag existingRecipeTag = getExistingRecipeTag();
 
-        List<RecipeTag> list =
-                recipeTagRepository.findByRecipeId(recipeId);
+        Long recipeId = existingRecipeTag.getRecipe().getId();
+
+        List<RecipeTag> list = recipeTagRepository.findByRecipeId(recipeId);
 
         assertNotNull(list);
         assertFalse(list.isEmpty());
@@ -43,9 +44,23 @@ public class RecipeTagRepositoryTest {
 
     @Test
     void shouldContainRecipeAndTag() {
-        RecipeTag recipeTag = recipeTagRepository.findAll().get(0);
+        RecipeTag recipeTag = getExistingRecipeTag();
 
         assertNotNull(recipeTag.getRecipe());
         assertNotNull(recipeTag.getTag());
+    }
+
+    private RecipeTag getExistingRecipeTag() {
+        List<RecipeTag> allRecipeTags = recipeTagRepository.findAll();
+
+        assertNotNull(allRecipeTags);
+        assertFalse(allRecipeTags.isEmpty(), "Database should contain at least one recipe_tag row");
+
+        RecipeTag recipeTag = allRecipeTags.getFirst();
+
+        assertNotNull(recipeTag.getRecipe());
+        assertNotNull(recipeTag.getTag());
+
+        return recipeTag;
     }
 }
