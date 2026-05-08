@@ -33,4 +33,13 @@ public class Recipe {
     private List<Comment> comments;
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<RecipeTag> recipeTags;
+
+    @Override
+    public String toString() {
+        return "Recipe{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", category='" + category + '\'' +
+                '}';
+    }
 }

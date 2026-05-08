@@ -21,4 +21,12 @@ public class Ingredient {
     private Recipe recipe;
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @Override
+    public String toString() {
+        return "Ingredient{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

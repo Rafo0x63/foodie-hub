@@ -79,7 +79,6 @@ public class CommentServiceImpl implements CommentService{
         newComment.setDeletedAt(null);
         newComment.setRecipe(recipe);
 
-        //dok login nije gotov
         User user = userRepository.findById(1L)
                 .orElseThrow(() -> new RuntimeException("User not found with id: 1"));
         newComment.setUser(user);
