@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
@@ -21,6 +21,9 @@ export class Login {
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
+
+  errorMessage: string = '';
 
   loginForm: FormGroup = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -33,6 +36,7 @@ export class Login {
       return;
     }
 
+    this.errorMessage = '';
     console.log(this.loginForm.getRawValue());
     this.authService.login(this.loginForm.getRawValue()).subscribe({
       next: (user) => {
@@ -41,6 +45,8 @@ export class Login {
       },
       error: (err) => {
         console.error('Login failed', err);
+        this.errorMessage = 'Neispravan email ili lozinka.';
+        this.cdr.detectChanges();
       }
     })
   }

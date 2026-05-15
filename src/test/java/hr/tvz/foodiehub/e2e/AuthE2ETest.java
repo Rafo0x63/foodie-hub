@@ -26,11 +26,11 @@ public class AuthE2ETest extends BaseSeleniumTest {
         WebElement passwordInput = driver.findElement(By.xpath("//*[@data-testid='lozinka-unos']"));
         WebElement loginButton = driver.findElement(By.xpath("//*[@data-testid='prijava-gumb']"));
 
-        assertTrue(emailInput.isDisplayed(), "Email input should be displayed");
-        assertTrue(passwordInput.isDisplayed(), "Password input should be displayed");
-        assertTrue(loginButton.isDisplayed(), "Login button should be displayed");
+        assertTrue(emailInput.isDisplayed(), "Polje za unos emaila nije pronađeno");
+        assertTrue(passwordInput.isDisplayed(), "Polje za unos lozinke nije pronađeno");
+        assertTrue(loginButton.isDisplayed(), "Gumb z prijavu nije pronađen");
         
-        assertEquals("vas.email@primjer.com", emailInput.getAttribute("placeholder"), "Email placeholder should be correct");
+        assertEquals("vas.email@primjer.com", emailInput.getAttribute("placeholder"), "Neispravan email placeholder");
     }
 
     @Test
@@ -53,7 +53,7 @@ public class AuthE2ETest extends BaseSeleniumTest {
         wait.until(ExpectedConditions.urlContains("/homepage"));
 
         String currentUrl = driver.getCurrentUrl();
-        assertTrue(currentUrl.contains("/homepage"), "Should be redirected to homepage after login");
+        assertTrue(currentUrl.contains("/homepage"), "Neuspješan redirect na početnu stranicu nakon prijave");
 
         WebElement welcomeText = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@data-testid='naslov-pocetna']")));
         assertTrue(welcomeText.getText().contains("Dijeli recepte"), "Početna stranica nije učitana");
