@@ -4,12 +4,13 @@ import hr.tvz.foodiehub.entities.Comment;
 import hr.tvz.foodiehub.entities.Recipe;
 import hr.tvz.foodiehub.entities.User;
 import hr.tvz.foodiehub.model.dtos.CommentDTO;
-import hr.tvz.foodiehub.model.dtos.UserDTO;
 import hr.tvz.foodiehub.model.requests.CreateCommentRequest;
 import hr.tvz.foodiehub.repositories.CommentRepository;
 import hr.tvz.foodiehub.repositories.RecipeRepository;
 import hr.tvz.foodiehub.repositories.UserRepository;
 import hr.tvz.foodiehub.services.interfaces.CommentService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -79,8 +80,15 @@ public class CommentServiceImpl implements CommentService{
         newComment.setDeletedAt(null);
         newComment.setRecipe(recipe);
 
-        User user = userRepository.findById(1L)
-                .orElseThrow(() -> new RuntimeException("User not found with id: 1"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication != null ? authentication.getName() : null;
+
+        if (email == null || email.equals("anonymousUser")) {
+            throw new RuntimeException("Authenticated user not found");
+        }
+
+        User user = userRepository.findByEmailAndDeletedAtIsNull(email)
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
         newComment.setUser(user);
 
         Comment comment = commentRepository.save(newComment);
@@ -115,8 +123,8 @@ public class CommentServiceImpl implements CommentService{
                 comment.getText(),
                 comment.getRating(),
                 comment.getCreatedAt(),
-                comment.getUser().getId(),
                 comment.getRecipe().getId(),
+                comment.getUser().getId(),
                 comment.getUser().getName()
         );
     }
