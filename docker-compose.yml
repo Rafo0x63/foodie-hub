@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: mysql:8.0
@@ -14,6 +12,72 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - cicd-net
+
+  # ---- Jenkins ----
+  jenkins:
+    image: jenkins/jenkins:lts-jdk21
+    container_name: jenkins
+    user: root
+    ports:
+      - "8081:8080"      # 8081 jer 8080 koristi Spring Boot
+      - "50010:50000"
+    environment:
+      - JAVA_OPTS=-Xmx1g
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock     # daje Jenkinsu pristup Dockeru
+    restart: unless-stopped
+    networks:
+      - cicd-net
+
+  # ---- SonarQube ----
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    depends_on:
+      - sonar-db
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_JDBC_URL=jdbc:postgresql://sonar-db:5432/sonar
+      - SONAR_JDBC_USERNAME=sonar
+      - SONAR_JDBC_PASSWORD=sonar
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_ext:/opt/sonarqube/extensions
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    restart: unless-stopped
+    networks:
+      - cicd-net
+
+  # ---- PostgreSQL za SonarQube ----
+  sonar-db:
+    image: postgres:16-alpine
+    container_name: sonar-db
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+      - POSTGRES_DB=sonar
+    volumes:
+      - sonar_db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - cicd-net
 
 volumes:
   db_data:
+  jenkins_home:
+  sonarqube_data:
+  sonarqube_logs:
+  sonarqube_ext:
+  sonar_db_data:
+
+networks:
+  cicd-net:
+    driver: bridge
