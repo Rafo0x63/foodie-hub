@@ -1,0 +1,42 @@
+# =============================================================
+#  Render Infrastructure as Code
+#  Docs: https://render.com/docs/blueprint-spec
+# =============================================================
+
+services:
+  # ---- Spring Boot Web Service ----
+  - type: web
+    name: foodie-hub
+    runtime: docker
+    region: frankfurt        # najbliža Hrvatskoj
+    plan: free
+    branch: main
+    healthCheckPath: /actuator/health
+    autoDeploy: true
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: JAVA_OPTS
+        value: "-Xmx384m -XX:+UseSerialGC -Dserver.tomcat.threads.max=20"
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: quotes-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: quotes-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: quotes-db
+          property: password
+
+# ---- PostgreSQL baza ----
+databases:
+  - name: quotes-db
+    databaseName: quotes
+    user: quotes
+    plan: free
+    region: frankfurt
+    ipAllowList: []          # public access (free plan limit)
