@@ -26,7 +26,7 @@ USER spring:spring
 WORKDIR /opt/app
 
 # Kopiraj JAR iz build stage-a
-COPY --from=build --chown=spring:spring /app/target/quotes-api.jar app.jar
+COPY --from=build --chown=spring:spring /app/target/foodie-hub-0.0.1-SNAPSHOT.jar app.jar
 
 # Render injectira PORT env varijablu
 ENV PORT=8080
