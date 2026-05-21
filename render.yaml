@@ -10,7 +10,7 @@ services:
     runtime: docker
     region: frankfurt        # najbliža Hrvatskoj
     plan: free
-    branch: main
+    branch: sprint-7
     healthCheckPath: /actuator/health
     autoDeploy: true
     dockerfilePath: ./Dockerfile
