@@ -1,13 +1,17 @@
 <div class="min-h-screen bg-gray-50">
-
   <div class="pt-16 pb-8 bg-gradient-to-b from-orange-50 to-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+    <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4"
+    >
       <div>
-        <h1 class="text-4xl lg:text-5xl text-gray-900 mb-2">Svi recepti</h1>
+        <h1 data-testid="naslov-recepti" class="text-4xl lg:text-5xl text-gray-900 mb-2">
+          Svi recepti
+        </h1>
         <p class="text-xl text-gray-600">Pronađi savršen recept za svaku priliku</p>
       </div>
       <button
         type="button"
+        data-testid="novi-recept-gumb"
         (click)="addRecipe()"
         class="flex items-center gap-2 rounded-lg bg-orange-500 px-6 py-3 text-sm font-medium text-white transition hover:bg-orange-600"
       >
@@ -21,7 +25,9 @@
     <div class="mb-8 space-y-4">
       <div class="flex gap-4">
         <div class="relative flex-1">
-          <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+          <i
+            class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"
+          ></i>
           <input
             type="text"
             [formControl]="searchControl"
@@ -32,9 +38,11 @@
         <button
           type="button"
           (click)="toggleFilters()"
-          [class]="showFilters
-            ? 'flex items-center gap-2 rounded-lg bg-orange-500 px-6 py-3 text-sm font-medium text-white transition'
-            : 'flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-6 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50'"
+          [class]="
+            showFilters
+              ? 'flex items-center gap-2 rounded-lg bg-orange-500 px-6 py-3 text-sm font-medium text-white transition'
+              : 'flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-6 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50'
+          "
         >
           <i class="pi pi-sliders-h"></i>
           Filteri
@@ -46,9 +54,11 @@
           <button
             type="button"
             (click)="filterForm.get('category')?.setValue(category.value)"
-            [class]="filterForm.value.category === category.value
-              ? 'whitespace-nowrap rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white transition'
-              : 'whitespace-nowrap rounded-lg bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100'"
+            [class]="
+              filterForm.value.category === category.value
+                ? 'whitespace-nowrap rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white transition'
+                : 'whitespace-nowrap rounded-lg bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100'
+            "
           >
             {{ category.label }}
           </button>
@@ -85,7 +95,8 @@
 
           <div class="mt-6 flex items-center justify-between border-t border-gray-200 pt-4">
             <p class="text-sm text-gray-600">
-              Pronađeno <span class="font-semibold text-gray-900">{{ filteredRecipes.length }}</span> recepata
+              Pronađeno
+              <span class="font-semibold text-gray-900">{{ filteredRecipes.length }}</span> recepata
             </p>
             <button
               type="button"
@@ -101,7 +112,8 @@
 
     <div class="mb-6">
       <p class="text-gray-600">
-        Prikazano <span class="font-semibold text-gray-900">{{ filteredRecipes.length }}</span> recepata
+        Prikazano
+        <span class="font-semibold text-gray-900">{{ filteredRecipes.length }}</span> recepata
       </p>
     </div>
 
@@ -111,10 +123,15 @@
         Učitavanje recepata...
       </div>
     } @else if (filteredRecipes.length > 0) {
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div
+        data-testid="tablica-recepata"
+        class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      >
         @for (recipe of filteredRecipes; track recipe.id) {
-          <div class="group overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
-
+          <div
+            [attr.data-testid]="'recept-red-' + recipe.id"
+            class="group overflow-hidden rounded-xl bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
+          >
             <a [routerLink]="['/recipe', recipe.id]" class="block cursor-pointer">
               <div class="relative overflow-hidden bg-gray-100">
                 <img
@@ -122,20 +139,29 @@
                   alt="Recipe image"
                   class="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent"></div>
-                <span class="absolute bottom-3 left-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-semibold text-white">
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent"
+                ></div>
+                <span
+                  class="absolute bottom-3 left-3 rounded-full bg-orange-500 px-3 py-1 text-xs font-semibold text-white"
+                >
                   {{ recipe.category }}
                 </span>
               </div>
 
               <div class="p-4 space-y-2">
-                <h3 class="line-clamp-2 text-lg font-semibold text-gray-900">
+                <h3
+                  data-testid="recept-naziv"
+                  class="line-clamp-2 text-lg font-semibold text-gray-900"
+                >
                   {{ recipe.title }}
                 </h3>
                 <p class="line-clamp-3 text-sm leading-6 text-gray-600">
                   {{ recipe.description }}
                 </p>
-                <div class="pt-2 text-sm font-medium text-orange-600 transition-colors group-hover:text-orange-500">
+                <div
+                  class="pt-2 text-sm font-medium text-orange-600 transition-colors group-hover:text-orange-500"
+                >
                   Klikni za detalje
                 </div>
               </div>
@@ -144,6 +170,7 @@
             @if (canModify(recipe)) {
               <div class="flex gap-3 px-4 pb-4">
                 <p-button
+                  [attr.data-testid]="'uredi-recept-' + recipe.id"
                   label="Uredi"
                   icon="pi pi-pencil"
                   styleClass="!rounded-xl !px-4 !py-2 !text-sm hover:!bg-orange-50 hover:!text-orange-500"
@@ -151,6 +178,7 @@
                 ></p-button>
 
                 <p-button
+                  [attr.data-testid]="'obrisi-recept-' + recipe.id"
                   label="Obriši"
                   icon="pi pi-trash"
                   severity="danger"
@@ -161,14 +189,14 @@
                 ></p-button>
               </div>
             }
-
           </div>
         }
       </div>
-
     } @else {
       <div class="py-16 text-center">
-        <div class="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+        <div
+          class="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-gray-100"
+        >
           <i class="pi pi-search text-3xl text-gray-400"></i>
         </div>
         <h3 class="mb-2 text-xl font-semibold text-gray-900">Nema pronađenih recepata</h3>
@@ -182,6 +210,5 @@
         </button>
       </div>
     }
-
   </main>
 </div>
