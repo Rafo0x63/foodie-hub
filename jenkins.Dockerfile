@@ -20,4 +20,9 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends docker-ce-cli \
  && rm -rf /var/lib/apt/lists/*
 
+# Pre-install Jenkins plugins needed by the pipeline:
+#   docker-workflow → unlocks `agent { docker { ... } }` and `docker.image(...).inside { }`
+#   ws-cleanup     → omogućuje `cleanWs` step u post bloku
+RUN jenkins-plugin-cli --plugins docker-workflow ws-cleanup
+
 USER jenkins

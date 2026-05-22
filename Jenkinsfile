@@ -222,13 +222,20 @@ pipeline {
 
     post {
         success {
-            echo "Build #${BUILD_NUMBER} (${GIT_SHA}) USPJEŠAN."
+            echo "Build #${BUILD_NUMBER} (${env.GIT_SHA ?: 'pre-checkout'}) USPJEŠAN."
         }
         failure {
-            echo "Build #${BUILD_NUMBER} (${GIT_SHA}) PAO. Provjeri: ${BUILD_URL}"
+            echo "Build #${BUILD_NUMBER} (${env.GIT_SHA ?: 'pre-checkout'}) PAO. Provjeri: ${BUILD_URL}"
         }
         always {
-            cleanWs(deleteDirs: true, notFailBuild: true)
+            // cleanWs zahtijeva Workspace Cleanup plugin (ws-cleanup) — guard u catch ako fali
+            script {
+                try {
+                    cleanWs(deleteDirs: true, notFailBuild: true)
+                } catch (ignored) {
+                    echo "cleanWs nije dostupan (Workspace Cleanup plugin nije instaliran)."
+                }
+            }
         }
     }
 }
