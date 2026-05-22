@@ -41,6 +41,7 @@ pipeline {
     }
 
     triggers {
+        githubPush()
         // Backup ako webhook padne — pollaj svakih 10 minuta
         pollSCM('H/10 * * * *')
     }
