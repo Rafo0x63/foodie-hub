@@ -30,7 +30,7 @@ pipeline {
         GHCR_PAT        = credentials('ghcr-pat')        // GitHub PAT s write:packages
         RENDER_HOOK     = credentials('render-deploy-hook')
         // TODO: replace with real FoodieHub deploy URL before running deploy smoke tests
-        STAGING_URL     = 'TODO_FOODIEHUB_DEPLOY_URL'
+        STAGING_URL     = 'https://foodie-hub-gllq.onrender.com'
     }
 
     options {
@@ -41,6 +41,7 @@ pipeline {
     }
 
     triggers {
+        githubPush()
         // Backup ako webhook padne — pollaj svakih 10 minuta
         pollSCM('H/10 * * * *')
     }
@@ -50,6 +51,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+                sh 'chmod +x mvnw'
                 script {
                     env.GIT_SHA = sh(returnStdout: true,
                             script: 'git rev-parse --short HEAD').trim()
@@ -168,7 +170,7 @@ pipeline {
         }
 
         stage('Deploy to Render') {
-            when { branch 'main' }
+            when { branch 'sprint-7' }
             steps {
                 sh 'curl -fsSL -X POST "$RENDER_HOOK"'
                 echo "Deploy pokrenut. Render će preuzeti novi image."
@@ -176,7 +178,7 @@ pipeline {
         }
 
         stage('Wait for Deploy') {
-            when { branch 'main' }
+            when { branch 'sprint-7' }
             steps {
                 script {
                     echo "Čekanje 90s da se Render redeploy završi..."
@@ -191,7 +193,7 @@ pipeline {
         }
 
         stage('Selenium E2E Smoke against deploy') {
-            when { branch 'main' }
+            when { branch 'sprint-7' }
             steps {
                 sh """
                     ./mvnw -B -ntp test \
