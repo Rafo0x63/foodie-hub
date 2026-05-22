@@ -228,12 +228,15 @@ pipeline {
             echo "Build #${BUILD_NUMBER} (${env.GIT_SHA ?: 'pre-checkout'}) PAO. Provjeri: ${BUILD_URL}"
         }
         always {
-            // cleanWs zahtijeva Workspace Cleanup plugin (ws-cleanup) — guard u catch ako fali
+            // cleanWs treba (a) ws-cleanup plugin i (b) `node` context. Ako pipeline padne
+            // prije nego agent uopće starta (npr. missing credential), nemamo ni jedno ni drugo.
             script {
                 try {
-                    cleanWs(deleteDirs: true, notFailBuild: true)
+                    node('built-in') {
+                        cleanWs(deleteDirs: true, notFailBuild: true)
+                    }
                 } catch (ignored) {
-                    echo "cleanWs nije dostupan (Workspace Cleanup plugin nije instaliran)."
+                    echo "cleanWs preskočen (plugin ili node context nedostupan)."
                 }
             }
         }
