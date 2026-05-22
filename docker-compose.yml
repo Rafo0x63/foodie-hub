@@ -17,7 +17,10 @@ services:
 
   # ---- Jenkins ----
   jenkins:
-    image: jenkins/jenkins:lts-jdk21
+    build:
+      context: .
+      dockerfile: jenkins.Dockerfile
+    image: foodie-hub-jenkins:lts-jdk21
     container_name: jenkins
     user: root
     ports:
