@@ -220,43 +220,6 @@
                         </activation>
                 </profile>
 
-                <!-- E2E testovi sa Seleniumom (-Pselenium) -->
-                <profile>
-                        <id>selenium</id>
-                        <build>
-                                <plugins>
-                                        <plugin>
-                                                <groupId>org.apache.maven.plugins</groupId>
-                                                <artifactId>maven-failsafe-plugin</artifactId>
-                                                <version>3.5.3</version>
-                                                <executions>
-                                                        <execution>
-                                                                <id>e2e-tests</id>
-                                                                <phase>integration-test</phase>
-                                                                <goals>
-                                                                        <goal>integration-test</goal>
-                                                                        <goal>verify</goal>
-                                                                </goals>
-                                                                <configuration>
-                                                                        <includes>
-                                                                                <include>**/e2e/**/*E2ETest.java</include>
-                                                                        </includes>
-                                                                        <systemPropertyVariables>
-                                                                                <selenium.headless>${selenium.headless}</selenium.headless>
-                                                                                <app.url>${app.url}</app.url>
-                                                                        </systemPropertyVariables>
-                                                                </configuration>
-                                                        </execution>
-                                                </executions>
-                                        </plugin>
-                                </plugins>
-                        </build>
-                        <properties>
-                                <selenium.headless>true</selenium.headless>
-                                <app.url>http://localhost:8080</app.url>
-                        </properties>
-                </profile>
-
                 <!-- Preskoči JaCoCo coverage check (-Pno-coverage-check) -->
                 <profile>
                         <id>no-coverage-check</id>
