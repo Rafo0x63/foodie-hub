@@ -50,6 +50,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+                sh 'chmod +x mvnw'
                 script {
                     env.GIT_SHA = sh(returnStdout: true,
                             script: 'git rev-parse --short HEAD').trim()
