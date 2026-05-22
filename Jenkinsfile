@@ -24,7 +24,7 @@ pipeline {
 
     environment {
         APP_NAME        = 'foodie-hub'
-        DOCKER_REGISTRY = 'ghcr.io/imilos1@tvz.hr'   // <-- promijenite
+        DOCKER_REGISTRY = 'ghcr.io/rafo0x63'
         SONAR_HOST_URL  = 'http://host.docker.internal:9000'
         SONAR_TOKEN     = credentials('sonar-token')
         GHCR_PAT        = credentials('ghcr-pat')        // GitHub PAT s write:packages
@@ -152,6 +152,7 @@ pipeline {
                 anyOf {
                     branch 'main'
                     branch 'develop'
+                    branch 'sprint-7'
                 }
             }
             steps {
