@@ -1,4 +1,6 @@
-<div class="min-h-screen bg-[linear-gradient(135deg,#FFF7ED_0%,#FFFFFF_50%,#FFF7ED_100%)] flex flex-col items-center justify-center px-4 py-10">
+<div
+  class="min-h-screen bg-[linear-gradient(135deg,#FFF7ED_0%,#FFFFFF_50%,#FFF7ED_100%)] flex flex-col items-center justify-center px-4 py-10"
+>
   <a [routerLink]="['/']" class="flex items-center gap-3 mb-10">
     <i class="pi pi-book text-[36px] text-orange-500"></i>
     <h1 class="text-4xl font-bold text-slate-900">FoodieHub</h1>
@@ -15,7 +17,15 @@
         <label for="email" class="block text-slate-900 font-semibold mb-3">Email adresa</label>
         <p-iconField class="w-full">
           <p-inputIcon class="pi pi-envelope text-slate-400" />
-          <input id="email" data-testid="email-unos" type="email" pInputText formControlName="email" placeholder="vas.email@primjer.com" class="w-full h-14 rounded-xl border border-slate-300 pl-12 pr-4 text-lg text-slate-700 placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200" />
+          <input
+            id="email"
+            data-testid="email-unos"
+            type="email"
+            pInputText
+            formControlName="email"
+            placeholder="vas.email@primjer.com"
+            class="w-full h-14 rounded-xl border border-slate-300 pl-12 pr-4 text-lg text-slate-700 placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
+          />
         </p-iconField>
       </div>
 
@@ -23,8 +33,22 @@
         <label for="password" class="block text-slate-900 font-semibold mb-3">Lozinka</label>
         <p-iconField class="w-full">
           <p-inputIcon class="pi pi-lock text-slate-400" />
-          <input id="password" data-testid="lozinka-unos" #passwordInput type="password" pInputText formControlName="password" placeholder="••••••••" class="w-full h-14 rounded-xl border border-slate-300 px-12 text-lg text-slate-700 placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200" />
-          <p-inputIcon class="text-slate-400 cursor-pointer" [class.pi-eye]="passwordInput.type === 'password'" [class.pi-eye-slash]="passwordInput.type !== 'password'" (click)="passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password'"></p-inputIcon>
+          <input
+            id="password"
+            data-testid="lozinka-unos"
+            #passwordInput
+            type="password"
+            pInputText
+            formControlName="password"
+            placeholder="••••••••"
+            class="w-full h-14 rounded-xl border border-slate-300 px-12 text-lg text-slate-700 placeholder:text-slate-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
+          />
+          <p-inputIcon
+            class="text-slate-400 cursor-pointer"
+            [class.pi-eye]="passwordInput.type === 'password'"
+            [class.pi-eye-slash]="passwordInput.type !== 'password'"
+            (click)="passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password'"
+          ></p-inputIcon>
         </p-iconField>
       </div>
 
@@ -33,39 +57,57 @@
           <p-checkbox inputId="rememberMe" binary="true" />
           <label for="rememberMe" class="text-slate-600">Zapamti me</label>
         </div>
-        <a routerLink="/forgot-password" class="font-semibold text-orange-500 hover:text-orange-600">Zaboravili ste lozinku?</a>
+        <a routerLink="/forgot-password" class="font-semibold text-orange-500 hover:text-orange-600"
+          >Zaboravili ste lozinku?</a
+        >
       </div>
 
       @if (errorMessage) {
-        <div id="login-error" data-testid="poruka-pogreska" class="p-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+        <div
+          id="login-error"
+          data-testid="poruka-pogreska"
+          class="p-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50"
+          role="alert"
+        >
           {{ errorMessage }}
         </div>
       }
-        
-      <p-button type="submit" data-testid="prijava-gumb" label="Prijavi se" styleClass="!w-full !h-14 !rounded-xl !bg-orange-500 !border-orange-500 hover:!bg-orange-600 hover:!border-orange-600 !text-white !text-lg !font-bold !shadow-lg !shadow-orange-200" />
-      
+
+      <p-button
+        type="submit"
+        data-testid="prijava-gumb"
+        label="Prijavi se"
+        styleClass="!w-full !h-14 !rounded-xl !bg-orange-500 !border-orange-500 hover:!bg-orange-600 hover:!border-orange-600 !text-white !text-lg !font-bold !shadow-lg !shadow-orange-200"
+      />
+
       <div class="flex items-center gap-4 py-2">
         <div class="h-px flex-1 bg-slate-200"></div>
         <span class="text-slate-500">ili</span>
         <div class="h-px flex-1 bg-slate-200"></div>
       </div>
 
-      <button class="w-full h-14 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-lg font-semibold flex items-center justify-center gap-3">
+      <button
+        class="w-full h-14 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-lg font-semibold flex items-center justify-center gap-3"
+      >
         <span class="text-xl font-bold text-blue-500">G</span>
         <span>Nastavi sa Google</span>
       </button>
 
-      <button class="w-full h-14 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-lg font-semibold flex items-center justify-center gap-3">
+      <button
+        class="w-full h-14 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-lg font-semibold flex items-center justify-center gap-3"
+      >
         <i class="pi pi-facebook text-blue-600 text-xl"></i>
         <span>Nastavi sa Facebook</span>
       </button>
 
       <div class="border-t border-slate-100 pt-6 text-center text-lg text-slate-500">
-        Nemate račun? <a routerLink="/register" class="font-bold text-orange-500 hover:text-orange-600">Registriraj se</a>
+        Nemate račun?
+        <a routerLink="/register" class="font-bold text-orange-500 hover:text-orange-600"
+          >Registriraj se</a
+        >
       </div>
     </form>
   </div>
 
   <a routerLink="/" class="mt-8 text-lg text-slate-500 hover:text-orange-500">← Nazad na početnu</a>
-
 </div>

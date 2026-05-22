@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { RecipeService } from '../../core/services/recipe.service';
 import { CreateRecipeRequest } from '../../models/recipe.model';
@@ -18,11 +18,12 @@ export class AddRecipe {
   private readonly recipeService = inject(RecipeService);
 
   createRecipeRequest!: CreateRecipeRequest;
+  submitted = false;
 
   addRecipeForm = this.fb.group({
-    title: [''],
-    description: [''],
-    category: [''],
+    title: ['', Validators.required],
+    description: ['', Validators.required],
+    category: ['', Validators.required],
     imageUrl: [''],
     prepTime: [null as number | null],
     cookTime: [null as number | null],
@@ -40,6 +41,13 @@ export class AddRecipe {
   }
 
   saveRecipe(): void {
+    this.submitted = true;
+
+    if (this.addRecipeForm.invalid) {
+      this.addRecipeForm.markAllAsTouched();
+      return;
+    }
+
     console.log(this.addRecipeForm.value);
 
     this.createRecipeRequest = this.addRecipeForm.value as CreateRecipeRequest;

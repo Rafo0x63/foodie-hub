@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { RecipeService } from '../../core/services/recipe.service';
 import { CreateRecipeRequest, RecipeModel } from '../../models/recipe.model';
@@ -15,16 +15,18 @@ import { Button } from "primeng/button";
 export class EditRecipe {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private readonly recipeService = inject(RecipeService);
 
   editRecipeRequest!: CreateRecipeRequest;  
   id!: number;
   recipeData = signal<RecipeModel | null>(null);
+  submitted = false;
 
   editRecipeForm = this.fb.group({
-    title: [''],
-    description: [''],
-    category: [''],
+    title: ['', Validators.required],
+    description: ['', Validators.required],
+    category: ['', Validators.required],
     imageUrl: [''],
     prepTime: [null as number | null],
     cookTime: [null as number | null],
@@ -64,10 +66,18 @@ export class EditRecipe {
   }
 
   saveRecipe(){
+    this.submitted = true;
+
+    if (this.editRecipeForm.invalid) {
+      this.editRecipeForm.markAllAsTouched();
+      return;
+    }
+
     console.log(this.editRecipeForm.value);
     this.editRecipeRequest = this.editRecipeForm.value as CreateRecipeRequest;
     this.recipeService.update(this.id, this.editRecipeRequest).subscribe({
       next: (updatedRecipe) => {
+        this.router.navigate(['/recipe-list']);
         console.log('Recept uspješno ažuriran', updatedRecipe);
       },
       error: (error) => {
