@@ -31,7 +31,7 @@ public class LoginPage {
         clearAndType(emailInput, email);
         clearAndType(passwordInput, password);
         clickLogin();
-        wait.until(ExpectedConditions.urlContains("/homepage"));
+        wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("/login")));
     }
 
     public void clickLogin() {

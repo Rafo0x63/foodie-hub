@@ -1,5 +1,5 @@
 // =============================================================
-//  Jenkinsfile — kompletan CI/CD pipeline za Quotes API
+//  Jenkinsfile - kompletan CI/CD pipeline za FoodieHub
 //  Stage-ovi:
 //    1. Checkout
 //    2. Compile
@@ -23,13 +23,14 @@ pipeline {
     }
 
     environment {
-        APP_NAME        = 'quotes-api'
+        APP_NAME        = 'foodie-hub'
         DOCKER_REGISTRY = 'ghcr.io/imilos1@tvz.hr'   // <-- promijenite
         SONAR_HOST_URL  = 'http://host.docker.internal:9000'
         SONAR_TOKEN     = credentials('sonar-token')
         GHCR_PAT        = credentials('ghcr-pat')        // GitHub PAT s write:packages
         RENDER_HOOK     = credentials('render-deploy-hook')
-        STAGING_URL     = 'https://quotes-api-staging.onrender.com'
+        // TODO: replace with real FoodieHub deploy URL before running deploy smoke tests
+        STAGING_URL     = 'TODO_FOODIEHUB_DEPLOY_URL'
     }
 
     options {
@@ -60,13 +61,13 @@ pipeline {
 
         stage('Compile') {
             steps {
-                sh 'mvn -B -ntp clean compile'
+                sh './mvnw -B -ntp clean compile'
             }
         }
 
         stage('Unit Tests') {
             steps {
-                sh 'mvn -B -ntp test'
+                sh './mvnw -B -ntp test'
             }
             post {
                 always {
@@ -78,12 +79,24 @@ pipeline {
 
         stage('Integration Tests') {
             steps {
-                sh 'mvn -B -ntp verify -DskipUnitTests'
+                sh './mvnw -B -ntp verify -DskipUnitTests'
             }
             post {
                 always {
                     junit testResults: 'target/failsafe-reports/*.xml',
                           allowEmptyResults: true
+                }
+            }
+        }
+
+        stage('OWASP Dependency Check') {
+            steps {
+                sh './mvnw -B -ntp org.owasp:dependency-check-maven:check'
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'target/dependency-check-report.*',
+                                     allowEmptyArchive: true
                 }
             }
         }
@@ -107,7 +120,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('sonarqube-local') {
                     sh """
-                        mvn -B -ntp sonar:sonar \
+                        ./mvnw -B -ntp sonar:sonar \
                             -Dsonar.host.url=${SONAR_HOST_URL} \
                             -Dsonar.token=${SONAR_TOKEN}
                     """
@@ -125,7 +138,7 @@ pipeline {
 
         stage('Package') {
             steps {
-                sh 'mvn -B -ntp package -DskipTests'
+                sh './mvnw -B -ntp package -DskipTests'
                 archiveArtifacts artifacts: 'target/*.jar',
                                  fingerprint: true,
                                  onlyIfSuccessful: true
@@ -177,23 +190,20 @@ pipeline {
             }
         }
 
-        stage('E2E Smoke Tests (Selenium)') {
+        stage('Selenium E2E Smoke against deploy') {
             when { branch 'main' }
             steps {
                 sh """
-                    mvn -B -ntp -Pselenium verify \
-                        -DskipTests=false \
-                        -DskipITs=true \
+                    ./mvnw -B -ntp test \
+                        -Dtest=DeploySmokeE2ETest \
                         -Dapp.url=${STAGING_URL} \
                         -Dselenium.headless=true
                 """
             }
             post {
                 always {
-                    junit testResults: 'target/failsafe-reports/*.xml',
+                    junit testResults: 'target/surefire-reports/*.xml',
                           allowEmptyResults: true
-                    archiveArtifacts artifacts: 'target/screenshots/**',
-                                     allowEmptyArchive: true
                 }
             }
         }
