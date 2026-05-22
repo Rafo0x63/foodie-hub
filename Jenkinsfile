@@ -14,12 +14,14 @@
 // =============================================================
 
 pipeline {
-    agent any
-
-    tools {
-        // Konfigurirano u Manage Jenkins → Tools
-        jdk   'jdk-21'
-        maven 'maven-3.9'
+    agent {
+        docker {
+            image 'maven:3.9-eclipse-temurin-21'
+            // Mount host Docker socket so `docker build/push` works from inside the agent container.
+            // --user root je potreban da bismo (po potrebi) instalirali docker CLI u Docker stage-u.
+            args '-v /var/run/docker.sock:/var/run/docker.sock --user root'
+            reuseNode true
+        }
     }
 
     environment {
@@ -37,7 +39,6 @@ pipeline {
         timeout(time: 30, unit: 'MINUTES')
         buildDiscarder(logRotator(numToKeepStr: '15'))
         timestamps()
-        ansiColor('xterm')
     }
 
     triggers {
@@ -156,6 +157,13 @@ pipeline {
                 }
             }
             steps {
+                // Maven base image nema docker CLI — instaliraj ga jednokratno.
+                sh '''
+                    if ! command -v docker >/dev/null 2>&1; then
+                        apt-get update -qq
+                        apt-get install -y -qq --no-install-recommends docker.io
+                    fi
+                '''
                 sh """
                     echo \$GHCR_PAT_PSW | docker login ghcr.io -u \$GHCR_PAT_USR --password-stdin
                     docker build -t ${IMAGE_TAG} -t ${DOCKER_REGISTRY}/${APP_NAME}:latest .
