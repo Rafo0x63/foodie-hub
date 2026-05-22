@@ -79,7 +79,7 @@ class CommentControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "ana@gmail.com")
     void createComment_withAuthentication_returns201() throws Exception {
 
         CreateCommentRequest request = new CreateCommentRequest(
