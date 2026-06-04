@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.print.Pageable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +26,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long>, JpaSpecif
 
     Optional<Recipe> findByIdAndDeletedAtIsNull(Long id);
 
-
+    @Transactional
+    List<Recipe> findByDeletedAtBefore(LocalDateTime cutoff);
 
 }
