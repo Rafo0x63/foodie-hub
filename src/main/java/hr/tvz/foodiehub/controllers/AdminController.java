@@ -1,7 +1,7 @@
 package hr.tvz.foodiehub.controllers;
 
 import hr.tvz.foodiehub.model.dtos.UserDTO;
-import hr.tvz.foodiehub.services.interfaces.UserService;
+import hr.tvz.foodiehub.services.interfaces.UserQueryService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,14 +13,13 @@ import java.util.List;
 @RequestMapping("api/admin")
 public class AdminController {
 
-    private final UserService userService;
+    private final UserQueryService userQueryService;
 
-    public AdminController(UserService userService) {this.userService = userService;}
+    public AdminController(UserQueryService userQueryService) {this.userQueryService = userQueryService;}
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPER_ADMIN')")
     @GetMapping("/users")
     public List<UserDTO> getAllUsers() {
-        System.out.println("hey hey hey");
-        return userService.getAllUsers();
+        return userQueryService.getAllUsers();
     }
 }

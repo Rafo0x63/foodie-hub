@@ -1,10 +1,13 @@
 package hr.tvz.foodiehub.scheduler.jobs;
 
 import hr.tvz.foodiehub.model.dtos.NewRecipesReportDTO;
+import hr.tvz.foodiehub.report.RecipeReportPublisher;
 import hr.tvz.foodiehub.services.interfaces.RecipeReportService;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 @PersistJobDataAfterExecution
 @DisallowConcurrentExecution
@@ -12,9 +15,11 @@ public class NewRecipesReportJob implements Job {
     private static final Logger log = LoggerFactory.getLogger(NewRecipesReportJob.class);
 
     private final RecipeReportService recipeReportService;
+    private final List<RecipeReportPublisher> publishers;
 
-    public NewRecipesReportJob(RecipeReportService recipeReportService) {
+    public NewRecipesReportJob(RecipeReportService recipeReportService, List<RecipeReportPublisher> publishers) {
         this.recipeReportService = recipeReportService;
+        this.publishers = publishers;
     }
 
     @Override
@@ -36,12 +41,7 @@ public class NewRecipesReportJob implements Job {
 
             NewRecipesReportDTO report = recipeReportService.generateNewRecipesReport(lookbackHours);
 
-            log.info("New-recipes report [{} - {}]: {} new recipe(s). Breakdown by category: {}. Titles: {}",
-                    report.getFrom(),
-                    report.getTo(),
-                    report.getTotalNewRecipes(),
-                    report.getCountByCategory(),
-                    report.getTitles());
+            publishers.forEach(publisher -> publisher.publish(report));
         } catch (JobExecutionException ex) {
             throw ex;
         } catch (Exception ex) {

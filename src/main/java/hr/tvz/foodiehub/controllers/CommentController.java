@@ -2,7 +2,7 @@ package hr.tvz.foodiehub.controllers;
 
 import hr.tvz.foodiehub.model.dtos.CommentDTO;
 import hr.tvz.foodiehub.model.requests.CreateCommentRequest;
-import hr.tvz.foodiehub.services.interfaces.CommentService;
+import hr.tvz.foodiehub.services.interfaces.RecipeCommentService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,29 +14,29 @@ import java.util.List;
 @RequestMapping("/api/recipes/{recipeId}/comments")
 public class CommentController {
 
-    private final CommentService commentService;
+    private final RecipeCommentService recipeCommentService;
 
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
+    public CommentController(RecipeCommentService recipeCommentService) {
+        this.recipeCommentService = recipeCommentService;
     }
 
     @GetMapping
     public ResponseEntity<List<CommentDTO>> getAllRecipeComments(@PathVariable Long recipeId) {
-        return ResponseEntity.ok(commentService.getAllRecipeComments(recipeId));
+        return ResponseEntity.ok(recipeCommentService.getAllRecipeComments(recipeId));
     }
 
     @GetMapping("/{commentId}")
     public ResponseEntity<CommentDTO> getCommentById(@PathVariable Long recipeId,
                                                      @PathVariable Long commentId)
     {
-        return ResponseEntity.ok(commentService.getCommentById(recipeId, commentId));
+        return ResponseEntity.ok(recipeCommentService.getCommentById(recipeId, commentId));
 
     }
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteCommentById(@PathVariable Long recipeId,
                                                   @PathVariable Long commentId) {
-        commentService.deleteCommentById(recipeId, commentId);
+        recipeCommentService.deleteCommentById(recipeId, commentId);
         return ResponseEntity.noContent().build();
     }
 
@@ -45,7 +45,7 @@ public class CommentController {
             @PathVariable Long recipeId,
             @Valid @RequestBody CreateCommentRequest createCommentRequest
     ) {
-        CommentDTO createdComment = commentService.createNewComment(recipeId, createCommentRequest);
+        CommentDTO createdComment = recipeCommentService.createNewComment(recipeId, createCommentRequest);
         URI location = URI.create("/api/recipes/" + recipeId + "/comments/" + createdComment.getId());
 
         return ResponseEntity.created(location).body(createdComment);
@@ -57,6 +57,6 @@ public class CommentController {
             @PathVariable Long commentId,
             @Valid @RequestBody CreateCommentRequest createCommentRequest
     ) {
-        return ResponseEntity.ok(commentService.updateComment(recipeId, commentId, createCommentRequest));
+        return ResponseEntity.ok(recipeCommentService.updateComment(recipeId, commentId, createCommentRequest));
     }
 }
