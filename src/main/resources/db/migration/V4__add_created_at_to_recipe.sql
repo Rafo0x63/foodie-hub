@@ -1,0 +1,1 @@
+ALTER TABLE recipe ADD COLUMN created_at DATETIME(6);

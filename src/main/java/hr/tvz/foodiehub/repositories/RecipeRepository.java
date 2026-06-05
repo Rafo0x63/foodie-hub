@@ -29,4 +29,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long>, JpaSpecif
     @Transactional
     List<Recipe> findByDeletedAtBefore(LocalDateTime cutoff);
 
+    List<Recipe> findByCreatedAtAfterAndDeletedAtIsNull(LocalDateTime createdAfter);
+
 }

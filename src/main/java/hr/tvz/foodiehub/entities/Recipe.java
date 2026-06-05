@@ -2,6 +2,7 @@ package hr.tvz.foodiehub.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,9 @@ public class Recipe {
     private User user;
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
