@@ -1,59 +1,75 @@
 CREATE TABLE users (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR(255) NOT NULL,
-email VARCHAR(255) NOT NULL UNIQUE,
-role VARCHAR(50) NOT NULL,
-status VARCHAR(50) NOT NULL,
-join_date DATE,
-last_active DATE
+name VARCHAR(255),
+email VARCHAR(255) UNIQUE,
+deleted_at DATETIME(6)
 );
 
-CREATE TABLE recipes (
+CREATE TABLE roles (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
-title VARCHAR(255) NOT NULL,
-description TEXT,
-category VARCHAR(100)
+role_name VARCHAR(255)
 );
 
-CREATE TABLE ingredients (
-id BIGINT AUTO_INCREMENT PRIMARY KEY,
-recipe_id BIGINT NOT NULL,
-name VARCHAR(255) NOT NULL,
-amount VARCHAR(100),
-category VARCHAR(100),
-FOREIGN KEY (recipe_id) REFERENCES recipes(id)
+CREATE TABLE user_role (
+user_id BIGINT NOT NULL,
+role_id BIGINT NOT NULL,
+FOREIGN KEY (user_id) REFERENCES users(id),
+FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
-CREATE TABLE steps (
+CREATE TABLE recipe (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
-recipe_id BIGINT NOT NULL,
-step_number INT NOT NULL,
+title VARCHAR(255),
+description VARCHAR(255),
+image VARCHAR(255),
+category VARCHAR(255),
+time INT,
+user_id BIGINT,
+deleted_at DATETIME(6),
+FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE ingredient (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(255),
+amount VARCHAR(255),
+recipe_id BIGINT,
+deleted_at DATETIME(6),
+FOREIGN KEY (recipe_id) REFERENCES recipe(id)
+);
+
+CREATE TABLE step (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+step_number INT,
 title VARCHAR(255),
 description TEXT,
-time VARCHAR(50),
-FOREIGN KEY (recipe_id) REFERENCES recipes(id)
+time INT,
+recipe_id BIGINT NOT NULL,
+deleted_at DATETIME(6),
+FOREIGN KEY (recipe_id) REFERENCES recipe(id)
 );
 
-CREATE TABLE tags (
+CREATE TABLE tag (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
-name VARCHAR(100) NOT NULL UNIQUE
+name VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE recipe_tags (
+CREATE TABLE recipe_tag (
 recipe_id BIGINT NOT NULL,
 tag_id BIGINT NOT NULL,
 PRIMARY KEY (recipe_id, tag_id),
-FOREIGN KEY (recipe_id) REFERENCES recipes(id),
-FOREIGN KEY (tag_id) REFERENCES tags(id)
+FOREIGN KEY (recipe_id) REFERENCES recipe(id),
+FOREIGN KEY (tag_id) REFERENCES tag(id)
 );
 
-CREATE TABLE comments (
+CREATE TABLE comment (
 id BIGINT AUTO_INCREMENT PRIMARY KEY,
+text TEXT NOT NULL,
+rating INT NOT NULL,
+created_at DATETIME(6),
+deleted_at DATETIME(6),
 recipe_id BIGINT NOT NULL,
 user_id BIGINT NOT NULL,
-text TEXT NOT NULL,
-rating INT,
-created_at TIMESTAMP,
-FOREIGN KEY (recipe_id) REFERENCES recipes(id),
+FOREIGN KEY (recipe_id) REFERENCES recipe(id),
 FOREIGN KEY (user_id) REFERENCES users(id)
 );

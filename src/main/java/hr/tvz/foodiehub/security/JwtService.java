@@ -8,21 +8,29 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    private final String secret;
+    private final Clock clock;
+
+    public JwtService(@Value("${jwt.secret}") String secret, Clock clock) {
+        this.secret = secret;
+        this.clock = clock;
+    }
 
     public boolean isValid(String token) {
         try {
             Claims claims = extractAllClaims(token);
 
             return claims.getExpiration() != null
-                    && claims.getExpiration().after(new Date())
+                    && claims.getExpiration().after(Date.from(clock.instant()))
                     && "access".equals(claims.get("type", String.class));
 
         } catch (Exception e) {
@@ -41,12 +49,14 @@ public class JwtService {
     }
 
     public String generateToken(String username, List<String> roles) {
+        Instant now = clock.instant();
+
         return Jwts.builder()
                 .subject(username)
                 .claim("roles", roles)
                 .claim("type", "access")
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 sati
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(now.plus(Duration.ofHours(10))))
                 .signWith(getSigningKey())
                 .compact();
     }

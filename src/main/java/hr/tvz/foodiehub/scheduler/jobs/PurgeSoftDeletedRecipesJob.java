@@ -1,6 +1,6 @@
 package hr.tvz.foodiehub.scheduler.jobs;
 
-import hr.tvz.foodiehub.services.interfaces.RecipeService;
+import hr.tvz.foodiehub.services.interfaces.RecipeMaintenanceService;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 public class PurgeSoftDeletedRecipesJob implements Job {
     private static final Logger log = LoggerFactory.getLogger(PurgeSoftDeletedRecipesJob.class);
 
-    private final RecipeService recipeService;
+    private final RecipeMaintenanceService recipeMaintenanceService;
 
-    public PurgeSoftDeletedRecipesJob(RecipeService recipeService) {
-        this.recipeService = recipeService;
+    public PurgeSoftDeletedRecipesJob(RecipeMaintenanceService recipeMaintenanceService) {
+        this.recipeMaintenanceService = recipeMaintenanceService;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class PurgeSoftDeletedRecipesJob implements Job {
             log.info("Starting soft-deleted recipe purge. runCount={}, retentionDays={}, batchSize={}, dryRun={}",
                     runCount, retentionDays, batchSize, dryRun);
 
-            int purgedRecipeBatchSize = recipeService.purgeSoftDeletedRecipesOlderThan(retentionDays, batchSize, dryRun);
+            int purgedRecipeBatchSize = recipeMaintenanceService.purgeSoftDeletedRecipesOlderThan(retentionDays, batchSize, dryRun);
 
             log.info("Finished soft-deleted recipe purge. processedRecipes={}, dryRun={}", purgedRecipeBatchSize, dryRun);
         } catch (JobExecutionException ex) {

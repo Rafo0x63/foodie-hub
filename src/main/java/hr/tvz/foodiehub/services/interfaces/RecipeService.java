@@ -11,5 +11,4 @@ public interface RecipeService {
     RecipeDTO createNewRecipe(CreateRecipeRequest createRecipeRequest);
     RecipeDTO updateRecipe(Long id, CreateRecipeRequest createRecipeRequest);
     List<RecipeDTO> search(String title, Integer maxTime, List<String> tags, String category);
-    int purgeSoftDeletedRecipesOlderThan(int retentionDays, int batchSize, boolean dryRun);
 }

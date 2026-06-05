@@ -22,7 +22,7 @@ public class QuartzJobsConfig {
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("retentionDays", 0);
         jobDataMap.put("batchSize", 50);
-        jobDataMap.put("dryRun", true);
+        jobDataMap.put("dryRun", false);
         jobDataMap.put("runCount", 0);
 
         return newJob(PurgeSoftDeletedRecipesJob.class)
