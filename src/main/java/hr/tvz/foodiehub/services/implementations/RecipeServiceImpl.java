@@ -61,6 +61,7 @@ public class RecipeServiceImpl implements RecipeService {
         newRecipe.setDescription(createRecipeRequest.description());
         newRecipe.setCategory(createRecipeRequest.category());
         newRecipe.setDeletedAt(null);
+        newRecipe.setImage(createRecipeRequest.imageUrl());
 
         String username = SecurityContextHolder.getContext()
                 .getAuthentication()
@@ -82,6 +83,7 @@ public class RecipeServiceImpl implements RecipeService {
         recipe.setTitle(createRecipeRequest.title());
         recipe.setDescription(createRecipeRequest.description());
         recipe.setCategory(createRecipeRequest.category());
+        recipe.setImage(createRecipeRequest.imageUrl());
 
         return mapToDTO(recipeRepository.save(recipe));
     }
@@ -107,6 +109,7 @@ public class RecipeServiceImpl implements RecipeService {
                 recipe.getTitle(),
                 recipe.getDescription(),
                 recipe.getCategory(),
+                recipe.getImage(),
                 new UserDTO(
                         recipe.getUser().getId(),
                         recipe.getUser().getName(),

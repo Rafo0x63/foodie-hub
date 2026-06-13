@@ -18,7 +18,7 @@ export class EditRecipe {
   private router = inject(Router);
   private readonly recipeService = inject(RecipeService);
 
-  editRecipeRequest!: CreateRecipeRequest;  
+  editRecipeRequest!: CreateRecipeRequest;
   id!: number;
   recipeData = signal<RecipeModel | null>(null);
   submitted = false;
@@ -44,7 +44,7 @@ export class EditRecipe {
           title: recipe.title ?? '',
           description: recipe.description ?? '',
           category: recipe.category ?? '',
-          imageUrl: '',
+          imageUrl: recipe.imageUrl ?? '',
           prepTime: null,
           cookTime: null,
           servings: null
@@ -88,9 +88,9 @@ export class EditRecipe {
 
 
 
-  
-  
-  
+
+
+
 
 
   /*Za kasnije*/

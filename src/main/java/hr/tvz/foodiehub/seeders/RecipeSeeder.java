@@ -31,7 +31,7 @@ public class RecipeSeeder {
                 Recipe recipe1 = new Recipe();
                 recipe1.setTitle("Carbonara");
                 recipe1.setDescription("Classic pasta with eggs, cheese and pancetta.");
-                recipe1.setImage("carbonara.jpg");
+                recipe1.setImage("https://picsum.photos/400/250?random=1");
                 recipe1.setCategory("Tjestenina");
                 recipe1.setDeletedAt(null);
                 recipe1.setUser(user1);
@@ -40,7 +40,7 @@ public class RecipeSeeder {
                 Recipe recipe2 = new Recipe();
                 recipe2.setTitle("Margherita Pizza");
                 recipe2.setDescription("Simple pizza with tomato sauce, mozzarella and basil.");
-                recipe2.setImage("margherita.jpg");
+                recipe2.setImage("https://picsum.photos/400/250?random=2");
                 recipe2.setCategory("Pizza");
                 recipe2.setDeletedAt(null);
                 recipe2.setUser(user2);
@@ -49,7 +49,7 @@ public class RecipeSeeder {
                 Recipe recipe3 = new Recipe();
                 recipe3.setTitle("Caesar Salad");
                 recipe3.setDescription("Fresh salad with chicken, croutons and Caesar dressing.");
-                recipe3.setImage("caesar.jpg");
+                recipe3.setImage("https://picsum.photos/400/250?random=3");
                 recipe3.setCategory("Salata");
                 recipe3.setDeletedAt(null);
                 recipe3.setUser(user3);
@@ -58,7 +58,7 @@ public class RecipeSeeder {
                 Recipe recipe4 = new Recipe();
                 recipe4.setTitle("Tiramisu");
                 recipe4.setDescription("Italian dessert with mascarpone, espresso and ladyfingers.");
-                recipe4.setImage("tiramisu.jpg");
+                recipe4.setImage("https://picsum.photos/400/250?random=4");
                 recipe4.setCategory("Deserti");
                 recipe4.setDeletedAt(null);
                 recipe4.setUser(user1);
@@ -67,7 +67,7 @@ public class RecipeSeeder {
                 Recipe recipe5 = new Recipe();
                 recipe5.setTitle("Penne Arrabbiata");
                 recipe5.setDescription("Spicy pasta with tomato sauce, garlic and chilli.");
-                recipe5.setImage("arrabbiata.jpg");
+                recipe5.setImage("https://picsum.photos/400/250?random=5");
                 recipe5.setCategory("Tjestenina");
                 recipe5.setDeletedAt(null);
                 recipe5.setUser(user2);
@@ -76,7 +76,7 @@ public class RecipeSeeder {
                 Recipe recipe6 = new Recipe();
                 recipe6.setTitle("Pepperoni Pizza");
                 recipe6.setDescription("Classic pizza loaded with pepperoni and mozzarella.");
-                recipe6.setImage("pepperoni.jpg");
+                recipe6.setImage("https://picsum.photos/400/250?random=6");
                 recipe6.setCategory("Pizza");
                 recipe6.setDeletedAt(null);
                 recipe6.setUser(user3);
@@ -85,7 +85,7 @@ public class RecipeSeeder {
                 Recipe recipe7 = new Recipe();
                 recipe7.setTitle("Greek Salad");
                 recipe7.setDescription("Tomatoes, cucumbers, olives and feta with olive oil.");
-                recipe7.setImage("greek_salad.jpg");
+                recipe7.setImage("https://picsum.photos/400/250?random=7");
                 recipe7.setCategory("Salata");
                 recipe7.setDeletedAt(null);
                 recipe7.setUser(user1);
@@ -94,7 +94,7 @@ public class RecipeSeeder {
                 Recipe recipe8 = new Recipe();
                 recipe8.setTitle("Chocolate Lava Cake");
                 recipe8.setDescription("Warm chocolate cake with a gooey molten centre.");
-                recipe8.setImage("lava_cake.jpg");
+                recipe8.setImage("https://picsum.photos/400/250?random=8");
                 recipe8.setCategory("Deserti");
                 recipe8.setDeletedAt(null);
                 recipe8.setUser(user2);
@@ -103,7 +103,7 @@ public class RecipeSeeder {
                 Recipe recipe9 = new Recipe();
                 recipe9.setTitle("Pad Thai");
                 recipe9.setDescription("Stir-fried rice noodles with shrimp, peanuts and lime.");
-                recipe9.setImage("pad_thai.jpg");
+                recipe9.setImage("https://picsum.photos/400/250?random=9");
                 recipe9.setCategory("Azijska kuhinja");
                 recipe9.setDeletedAt(null);
                 recipe9.setUser(user3);
@@ -112,7 +112,7 @@ public class RecipeSeeder {
                 Recipe recipe10 = new Recipe();
                 recipe10.setTitle("Spaghetti Bolognese");
                 recipe10.setDescription("Slow-cooked meat sauce served over spaghetti.");
-                recipe10.setImage("bolognese.jpg");
+                recipe10.setImage("https://picsum.photos/400/250?random=10");
                 recipe10.setCategory("Tjestenina");
                 recipe10.setDeletedAt(null);
                 recipe10.setUser(user1);
@@ -121,7 +121,7 @@ public class RecipeSeeder {
                 Recipe recipe11 = new Recipe();
                 recipe11.setTitle("Ramen");
                 recipe11.setDescription("Japanese noodle soup with rich broth, soft egg and chashu pork.");
-                recipe11.setImage("ramen.jpg");
+                recipe11.setImage("https://picsum.photos/400/250?random=11");
                 recipe11.setCategory("Azijska kuhinja");
                 recipe11.setDeletedAt(null);
                 recipe11.setUser(user2);
@@ -130,7 +130,7 @@ public class RecipeSeeder {
                 Recipe recipe12 = new Recipe();
                 recipe12.setTitle("Caprese Salad");
                 recipe12.setDescription("Fresh mozzarella, tomatoes and basil drizzled with balsamic glaze.");
-                recipe12.setImage("caprese.jpg");
+                recipe12.setImage("https://picsum.photos/400/250?random=12");
                 recipe12.setCategory("Salata");
                 recipe12.setDeletedAt(null);
                 recipe12.setUser(user3);
@@ -139,7 +139,7 @@ public class RecipeSeeder {
                 Recipe recipe13 = new Recipe();
                 recipe13.setTitle("Four Cheese Pizza");
                 recipe13.setDescription("Pizza topped with mozzarella, gorgonzola, parmesan and ricotta.");
-                recipe13.setImage("four_cheese.jpg");
+                recipe13.setImage("https://picsum.photos/400/250?random=13");
                 recipe13.setCategory("Pizza");
                 recipe13.setDeletedAt(null);
                 recipe13.setUser(user1);

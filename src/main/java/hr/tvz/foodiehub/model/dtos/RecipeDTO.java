@@ -12,5 +12,6 @@ public class RecipeDTO {
     private String title;
     private String description;
     private String category;
+    private String imageUrl;
     private UserDTO user;
 }

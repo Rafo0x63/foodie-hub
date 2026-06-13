@@ -38,6 +38,7 @@ export interface RecipeModel {
   title: string;
   description: string;
   category: string;
+  imageUrl: string;
   user: {
     id: number;
     name: string;
